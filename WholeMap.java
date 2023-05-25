@@ -34,18 +34,6 @@ public class WholeMap<T extends Comparable<T>>
         
     }
     
-    public static void main (String [] args) throws IOException
-    {
-        WholeMap wm= new WholeMap();
-        System.out.println(wm.halfTopMap.getNumOfVertex());
-        //wm.halfTopMap.printEdges();
-        System.out.println(wm.halfBottomMap.getNumOfVertex());
-        //wm.halfBottomMap.printEdges();
-        
-        System.out.println(wm.wholeMap.getNumOfVertex());
-        wm.wholeMap.printEdges();
-    }
-    
     
     public void changeStation(MapPieces mp)
     {
@@ -56,7 +44,7 @@ public class WholeMap<T extends Comparable<T>>
             if(Arrays.equals(temp.vertexInfo, finalStation))
             {
                 temp.vertexInfo[3]=1;
-                mp.getGraph().removeAllEdges(finalStation);
+                mp.getGraph().removeAllEdges(temp.vertexInfo);
             }
             temp=temp.nextVertex;
         }
@@ -131,14 +119,37 @@ public class WholeMap<T extends Comparable<T>>
     {
         UnweightedVertex<Integer> vertex1 = graph1.head;
         UnweightedVertex<Integer> vertex2 = graph2.head;
-
+        
+        //Connect the Last Node of the HalfTopMap which is {2,19,9,1}
+        //to the first node of the HalfBottomMap which is {3,0,0,0}
         while(vertex1.nextVertex!=null)
         {
             vertex1=vertex1.nextVertex;
         }
-
         vertex1.nextVertex=vertex2;
         
+        
+        //Iterates again graph1
+        vertex1=graph1.head;
+
+        // Between the connection part, which is {1-2,19,*,*} and {3-4,0,*,*}
+        // Add the Edges if needed
+        while(vertex1!=null)
+        {
+            if(vertex1.vertexInfo[1]==19)
+            {
+                while(vertex2.vertexInfo[1]==0)
+                {
+                    if(vertex2.vertexInfo[2]==vertex1.vertexInfo[2] && vertex1.vertexInfo[3]!=1 && vertex2.vertexInfo[3]!=1)
+                    {
+                        graph1.addUndirectedEdge(vertex1.vertexInfo, vertex2.vertexInfo);
+                    }
+                    vertex2=vertex2.nextVertex;
+                }
+            }
+            vertex1=vertex1.nextVertex;
+        }
+
         graph1.size+=graph2.size;
 
         return graph1;
