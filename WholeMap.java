@@ -1,158 +1,115 @@
-
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 
-
-public class WholeMap<T extends Comparable<T>>
+public class MapPieces
 {
-    File f1 = new File("D:\\DOWNLOAD\\image 1.png");
-    File f2 = new File("D:\\DOWNLOAD\\image 2.png");
-    File f3 = new File("D:\\DOWNLOAD\\image 3.png");
-    File f4 = new File("D:\\DOWNLOAD\\image 4.png");
+    private UnweightedGraph<Integer> graph;
+    private int mapNo;
+    private ReadPNG pieces;
+    private int [][] dotsArray;
+    private ArrayList<Integer[]> vertexArray;
     
-    UnweightedGraph<Integer> wholeMap,halfTopMap,halfBottomMap;
-    MapPieces mp1,mp2,mp3,mp4;
-    
-    public WholeMap() throws IOException
+    public MapPieces(File f,int mapNo) throws IOException
     {
-        mp1=new MapPieces(f1,1);
-        this.changeStation(mp1);
-        mp2=new MapPieces(f2,2);
-        this.changeStation(mp2);
-        halfTopMap=this.connectGraphHorizontally(mp1, mp2);
-        
-        
-        mp3=new MapPieces(f3,3);
-        this.changeStation(mp3);
-        mp4=new MapPieces(f4,4);
-        halfBottomMap=this.connectGraphHorizontally(mp3, mp4);
-        
-        wholeMap=this.connectGraphVertically(this.halfTopMap, this.halfBottomMap);
-        
+        this.mapNo=mapNo;
+        this.pieces = new ReadPNG(f);
+        this.dotsArray = pieces.getArrayDots();
+        this.graph = new UnweightedGraph();
+        this.vertexArray=new ArrayList<>();
+        this.addVertex();
+        this.addEdges();
     }
     
-    
-    public void changeStation(MapPieces mp)
+    public void addVertex()
     {
-        UnweightedVertex<Integer> temp = mp.getGraph().head;
-        Integer [] finalStation={mp.getMapNo(),19,9,3};
-        while(temp!=null)
+        for(int i=0; i<dotsArray.length;i++)
         {
-            if(Arrays.equals(temp.vertexInfo, finalStation))
+            for(int j=0; j<dotsArray[i].length;j++)
             {
-                temp.vertexInfo[3]=1;
-                mp.getGraph().removeAllEdges(temp.vertexInfo);
+                Integer [] holder1 ={this.mapNo,i,j,dotsArray[i][j]};
+                graph.addVertex(holder1);
+                vertexArray.add(holder1);
             }
-            temp=temp.nextVertex;
         }
-        
-        
-        
     }
     
-    public UnweightedGraph<Integer> connectGraphHorizontally(MapPieces mp1, MapPieces mp2)
+    public void addEdges()
     {
-        UnweightedGraph<Integer> graph1 = mp1.getGraph();
-        UnweightedGraph<Integer> graph2 = mp2.getGraph();
-
-        UnweightedVertex<Integer> vertex1 = graph1.head;
-        UnweightedVertex<Integer> vertex2 = graph2.head;
-        UnweightedVertex<Integer> vertex2_next = null;
-
-        while (vertex1 != null)
+        for(int i=0; i<dotsArray.length;i++)
         {
-            //iterates along graph1.vertex
-
-            //stop at the most right side vertex of graph1
-            if (vertex1.vertexInfo[2] == 9 && vertex1.vertexInfo[0] == mp1.getMapNo() && vertex2.vertexInfo[0] == mp2.getMapNo())
+            for(int j=0; j<dotsArray[i].length;j++)
             {
-                //break the link between the most right side vertex of graph1 and its next vertex
-                //such that the most right side vertex can link to the most left side vertex of graph2
-                UnweightedVertex<Integer> vertex1_next = vertex1.nextVertex;
-                while (vertex2 != null)
+                Integer [] holder1 ={this.mapNo,i,j,dotsArray[i][j]};
+                if(dotsArray[i][j]!=1)
                 {
-                    boolean statusCheck = true;
-
-                    if (vertex2.vertexInfo[2] == 0 && vertex2.vertexInfo[1] == vertex1.vertexInfo[1])
+                    if(i-1>=0)
                     {
-                        vertex1.nextVertex = vertex2;
-
-                        //add edge if it is not a obstacle
-                        if (vertex2.vertexInfo[3] != 1 && vertex1.vertexInfo[3] != 1)
-                            graph1.addUndirectedEdge(vertex1.vertexInfo, vertex2.vertexInfo);
-
-                        //break the link between the most right side vertex of graph2 and its next vertex
-                        //such that the most right side vertex can link to the most left side vertex of graph1
-                        while (vertex2.vertexInfo[1] == vertex1.vertexInfo[1] && vertex2.nextVertex != null)
+                        if(dotsArray[i-1][j]!=1)
                         {
-                            if (vertex2.vertexInfo[2] == 9)
-                            {
-                                vertex2_next = vertex2.nextVertex;
-                                vertex2.nextVertex = vertex1_next;
-                                vertex2 = vertex2_next;
-                                statusCheck = false;
-                                break;
-                            }
-                            vertex2 = vertex2.nextVertex;    
+                            Integer [] holder2 ={this.mapNo,i-1,j,dotsArray[i-1][j]};
+                            if(!graph.hasEdge(holder1, holder2))
+                                graph.addUndirectedEdge(holder1, holder2);
                         }
                     }
-                    if (statusCheck)
-                        vertex2 = vertex2.nextVertex;
 
-                    // Break out of the loop if the desired condition is met
-                    if (!statusCheck)
-                        break;
-                }
-            }
-            vertex1 = vertex1.nextVertex;
-        }
-
-        graph1.size += graph2.size;
-
-        return graph1;      
-    }
-
-    public UnweightedGraph<Integer> connectGraphVertically (UnweightedGraph<Integer> graph1, UnweightedGraph<Integer> graph2)
-    {
-        UnweightedVertex<Integer> vertex1 = graph1.head;
-        UnweightedVertex<Integer> vertex2 = graph2.head;
-        
-        //Connect the Last Node of the HalfTopMap which is {2,19,9,1}
-        //to the first node of the HalfBottomMap which is {3,0,0,0}
-        while(vertex1.nextVertex!=null)
-        {
-            vertex1=vertex1.nextVertex;
-        }
-        vertex1.nextVertex=vertex2;
-        
-        
-        //Iterates again graph1
-        vertex1=graph1.head;
-
-        // Between the connection part, which is {1-2,19,*,*} and {3-4,0,*,*}
-        // Add the Edges if needed
-        while(vertex1!=null)
-        {
-            if(vertex1.vertexInfo[1]==19)
-            {
-                while(vertex2.vertexInfo[1]==0)
-                {
-                    if(vertex2.vertexInfo[2]==vertex1.vertexInfo[2] && vertex1.vertexInfo[3]!=1 && vertex2.vertexInfo[3]!=1)
+                    if(i+1<dotsArray.length)
                     {
-                        graph1.addUndirectedEdge(vertex1.vertexInfo, vertex2.vertexInfo);
+                        if(dotsArray[i+1][j]!=1)
+                        {
+                            Integer [] holder2 ={this.mapNo,i+1,j,dotsArray[i+1][j]};
+                            if(!graph.hasEdge(holder1, holder2))
+                                graph.addUndirectedEdge(holder1, holder2);
+                        }
                     }
-                    vertex2=vertex2.nextVertex;
+
+                    if(j-1>=0)
+                    {
+                        if(dotsArray[i][j-1]!=1)
+                        {
+                            Integer [] holder2 ={this.mapNo,i,j-1,dotsArray[i][j-1]};
+                            if(!graph.hasEdge(holder1, holder2))
+                                graph.addUndirectedEdge(holder1, holder2);
+                        }
+                    }
+
+                    if(j+1<dotsArray[i].length)
+                    {
+                        if(dotsArray[i][j+1]!=1)
+                        {
+                            Integer [] holder2 ={this.mapNo,i,j+1,dotsArray[i][j+1]};
+                            if(!graph.hasEdge(holder1, holder2))
+                                graph.addUndirectedEdge(holder1, holder2);
+                        }
+                    }
                 }
+                    
             }
-            vertex1=vertex1.nextVertex;
         }
-
-        graph1.size+=graph2.size;
-
-        return graph1;
     }
+    
+    public UnweightedGraph<Integer> getGraph()
+    {
+        return this.graph;
+    }
+    
+    public ArrayList<Integer[]> getVertexArray()
+    {
+        return this.vertexArray;
+    }
+    
+    public int getMapNo()
+    {
+        return this.mapNo;
+    }
+    
+    public  int findPossiblePaths() throws IOException
+    {
 
+        Integer [] source = {mapNo,0,0,0};
+        Integer [] destination = {mapNo,19,9,3};
+        
+        return this.getGraph().findPaths(source,destination,2);
+    }
+   
 }
