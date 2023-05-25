@@ -117,14 +117,21 @@ public class UnweightedGraph <T extends Comparable<T>>
         return list;
     }
     
-    public T[] getVertex(int pos)
+    public UnweightedVertex<T> getVertex(T[] v)
     {
-        if(pos>size-1 || pos<0)
+        if(!hasVertex(v))
             return null;
+        if(head==null)
+            return null;
+        
         UnweightedVertex<T> temp = head;
-        for (int i=0; i<pos; i++)
+        while(temp!=null)
+        {
+            if(Arrays.equals(temp.vertexInfo, v))
+                    return temp;
             temp=temp.nextVertex;
-        return temp.vertexInfo;
+        }
+        return null;
     }
     
     public boolean hasEdge(T[] source, T[] destination)
@@ -274,6 +281,36 @@ public class UnweightedGraph <T extends Comparable<T>>
         return false;
     }
     
+    public boolean removeAllEdges(T[] v)
+    {
+        if(head == null)
+            return false;
+        if(!hasVertex(v))
+            return false;
+        if(this.getIndeg(v)==0&&this.getOutdeg(v)==0)
+            return false;
+        
+        UnweightedVertex<T> temp = head;
+        while(temp!=null)
+        {
+            if(Arrays.equals(temp.vertexInfo, v))
+            {
+                UnweightedEdge<T> currentEdge = temp.firstEdge;
+                while(currentEdge!=null)
+                {
+                    T[] destination = currentEdge.toVertex.vertexInfo;
+                    this.removeEdge(temp.vertexInfo, destination);
+                    this.removeEdge(destination,temp.vertexInfo);
+                    
+                    currentEdge=currentEdge.nextEdge;
+                }
+                return true;
+            }
+            temp=temp.nextVertex;
+        }
+        return false;
+    }
+    
     public boolean isEmpty()
     {
         if (head==null)
@@ -281,7 +318,7 @@ public class UnweightedGraph <T extends Comparable<T>>
         return false;
     }
     
-    public int findPaths (T[] source, T[] destination)
+    public int findPaths (T[] source, T[] destination, T station)
     {
         //Store visited path 
         Queue<List<T[]>> queue = new LinkedList<>();
@@ -310,8 +347,7 @@ public class UnweightedGraph <T extends Comparable<T>>
                 //iterates the path to check the no of station visited
                 for(int i=0; i< path.size();i++)
                 {
-                    Integer [] temp =(Integer[]) path.get(i);
-                    if(temp[3]==2)
+                    if(path.get(i)[3].compareTo(station)==0)
                         stationCounter++;
                 }
                 
@@ -372,6 +408,20 @@ public class UnweightedGraph <T extends Comparable<T>>
         }
         System.out.println();
     }
-            
+    
+    
+    public int getNumOfVertex()
+    {
+        UnweightedVertex<T> temp = this.head;
+        int size=0;
+        while(temp!=null)
+        {
+            size++;
+            temp=temp.nextVertex;
+        }
+        return size;
+    }
+    
+  
             
 }
