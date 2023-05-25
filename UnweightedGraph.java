@@ -225,7 +225,7 @@ public class UnweightedGraph <T extends Comparable<T>>
             UnweightedEdge <T> currentEdge = temp.firstEdge;
             while(currentEdge!=null)
             {
-                System.out.print("["+Arrays.toString(temp.vertexInfo) +","+Arrays.toString(currentEdge.toVertex.vertexInfo)+"]");
+                System.out.print("["+Arrays.toString(currentEdge.toVertex.vertexInfo)+"]  ");
                 currentEdge = currentEdge.nextEdge;
             }
             System.out.println();
@@ -280,6 +280,7 @@ public class UnweightedGraph <T extends Comparable<T>>
         }
         return false;
     }
+
     
     public boolean removeAllEdges(T[] v)
     {
