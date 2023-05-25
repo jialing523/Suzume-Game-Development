@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MapPieces
@@ -7,6 +8,7 @@ public class MapPieces
     private int mapNo;
     private ReadPNG pieces;
     private int [][] dotsArray;
+    private ArrayList<Integer[]> vertexArray;
     
     public MapPieces(File f,int mapNo) throws IOException
     {
@@ -14,6 +16,7 @@ public class MapPieces
         this.pieces = new ReadPNG(f);
         this.dotsArray = pieces.getArrayDots();
         this.graph = new UnweightedGraph();
+        this.vertexArray=new ArrayList<>();
         this.addVertex();
         this.addEdges();
     }
@@ -26,6 +29,7 @@ public class MapPieces
             {
                 Integer [] holder1 ={this.mapNo,i,j,dotsArray[i][j]};
                 graph.addVertex(holder1);
+                vertexArray.add(holder1);
             }
         }
     }
@@ -88,4 +92,24 @@ public class MapPieces
     {
         return this.graph;
     }
+    
+    public ArrayList<Integer[]> getVertexArray()
+    {
+        return this.vertexArray;
+    }
+    
+    public int getMapNo()
+    {
+        return this.mapNo;
+    }
+    
+    public  int findPossiblePaths() throws IOException
+    {
+
+        Integer [] source = {mapNo,0,0,0};
+        Integer [] destination = {mapNo,19,9,3};
+        
+        return this.getGraph().findPaths(source,destination,2);
+    }
+   
 }
