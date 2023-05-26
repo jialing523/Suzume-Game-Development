@@ -31,6 +31,9 @@ public class WholeMap<T extends Comparable<T>>
         
         wholeMap=this.connectGraphVertically(this.halfTopMap, this.halfBottomMap);
         
+        this.assignIndex(wholeMap);
+        this.printIndex(wholeMap);
+        
     }
     
     
@@ -153,6 +156,39 @@ public class WholeMap<T extends Comparable<T>>
 
         return graph1;
     }
+    
+    public void assignIndex(UnweightedGraph<Integer> graph)
+    {
+        UnweightedVertex<Integer> temp = graph.head;
+        int index=0;
+        
+        while(temp!=null)
+        {
+            temp.index=index;
+            index++;
+            temp=temp.nextVertex;
+        }
+        
+    }
+    
+    public void printIndex(UnweightedGraph<Integer> graph)
+    {
+        UnweightedVertex<Integer> temp = graph.head;
+        int counter=0;
+        
+        while(temp!=null)
+        {
+            System.out.print(temp.index+" ");
+            counter++;
+            if(counter%10==0)
+            {
+                System.out.println();
+            }
+            temp=temp.nextVertex;
+        }
+        
+    }
+    
 
 }
 
