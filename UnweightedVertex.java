@@ -1,7 +1,6 @@
-
 public class UnweightedVertex <T extends Comparable<T>>
 {
-    T dots,x,y,mPieces;
+    T dots,x,y,mPieces,index;
     T [] vertexInfo;
     int indeg,outdeg;
     UnweightedVertex <T> nextVertex;
@@ -14,6 +13,7 @@ public class UnweightedVertex <T extends Comparable<T>>
         this.y=null;
         this.mPieces=null;
         this.vertexInfo=null;
+        this.index=null;
         indeg=0;
         outdeg=0;
         nextVertex=null;
@@ -27,8 +27,15 @@ public class UnweightedVertex <T extends Comparable<T>>
         this.y=vertexInfo[2];
         this.dots=vertexInfo[3];
         this.vertexInfo=vertexInfo;
+        this.index=null;
         indeg=0;
         outdeg=0;
         firstEdge=null;
     }
+    
+    public T setIndex(T index)
+    {
+        return this.index=index;
+    }
 }
+
