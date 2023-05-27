@@ -8,6 +8,7 @@ public class UnweightedGraph <T extends Comparable<T>>
 {
     UnweightedVertex<T> head;
     int size;
+    int numOfPaths;
     
     public UnweightedGraph()
     {
@@ -319,6 +320,7 @@ public class UnweightedGraph <T extends Comparable<T>>
         return false;
     }
     
+    // breadth first search
     public int findPaths (T[] source, T[] destination, T station)
     {
         //Store visited path 
@@ -387,6 +389,40 @@ public class UnweightedGraph <T extends Comparable<T>>
         return noOfPath;
     }
     
+    
+    // Depth first search for finding possible paths
+    public int printAllPathsUntil(T[] current, T[] destination,List<T[]> localPathList){               
+      int stationCount=0;                                                                                                                                                                      
+      if(Arrays.equals(current,destination)){                                                                
+          for(int i=0;i<localPathList.size();i++) {                                                          
+              if ((Integer)localPathList.get(i)[3]==2)                                                       
+                  stationCount++;                                                                            
+          }                                                                                                  
+          if(stationCount==3){                                                                               
+              numOfPaths++;}                                                                                 
+           stationCount=0;                                                                                   
+    }                                                                                                        
+                                                                                                             
+      ArrayList<T[]> ngList = this.getNeighbours(current);                                                   
+      for(int i=0;i<ngList.size();i++){                                                                      
+          if(isNotVisited(ngList.get(i),localPathList)){                                                     
+              localPathList.add(ngList.get(i));                                                              
+              printAllPathsUntil(ngList.get(i),destination,localPathList);                                   
+              localPathList.remove(ngList.get(i));                                                           
+                                                                                                             
+          }                                                                                                  
+      }           return numOfPaths;                                                                         
+ }
+ 
+  public void printAllPaths(T[]source,T[]destination){                                                     
+         List<T[]> paths=new ArrayList<>();                                                                         
+         paths.add(source);                                                                                         
+         System.out.println("All possible paths: "+printAllPathsUntil(source,destination,paths));                   
+                                                                                                                    
+ }                
+ 
+ 
+    
     public boolean isNotVisited (T[] v, List<T[]> path )
     {
         int size=path.size();
@@ -423,6 +459,6 @@ public class UnweightedGraph <T extends Comparable<T>>
         return size;
     }
     
-  
+                     
             
 }
