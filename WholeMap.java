@@ -1,5 +1,3 @@
-import BackEnd.UnweightedGraph;
-import BackEnd.MapPieces;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ public class WholeMap
     File f3 = new File("D:\\DOWNLOAD\\image 3.png");
     File f4 = new File("D:\\DOWNLOAD\\image 4.png");
     
-    UnweightedGraph<Integer> wholeMap;
+    UnweightedGraph<Integer> wholeMap,halfTopMap,halfBottomMap;
     MapPieces mp1,mp2,mp3,mp4;
     int [][] wholeMapDotsArray;
     
@@ -39,7 +37,7 @@ public class WholeMap
 
         int [][] dotsArray3_4 = this.combineArrayHorizontally(dotsArray3, dotsArray4);
         
-        wholeMapDotsArray = this.combinateArrayVertically(dotsArray1_2, dotsArray3_4);
+        int [][] wholeMapDotsArray = this.combinateArrayVertically(dotsArray1_2, dotsArray3_4);
         
         MapPieces wholeMap = new MapPieces(wholeMapDotsArray);
         this.wholeMap=wholeMap.getGraph();
@@ -53,9 +51,10 @@ public class WholeMap
 //            System.out.println();
 //        }
     }
-    public int [][] getWholeMapDotsArray()
+    
+    public static void main (String [] args) throws IOException
     {
-        return this.wholeMapDotsArray;
+        WholeMap wm = new WholeMap();
     }
     
     public int[][] combineArrayHorizontally(int[][]arr1,int[][]arr2){
@@ -110,6 +109,11 @@ public class WholeMap
                             
                     return arr;
         }
+        
+           public int [][] getWholeMapDotsArray()
+    {
+        return this.wholeMapDotsArray;
+    }
 }
       
     
