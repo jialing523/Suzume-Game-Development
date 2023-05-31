@@ -10,18 +10,27 @@ public class MapPieces
     private int [][] dotsArray;
     private ArrayList<Integer[]> vertexArray;
     
-    public MapPieces(File f,int mapNo) throws IOException
+    public MapPieces(File f,int mapNo) throws IOException // for mapPieces used
     {
         this.mapNo=mapNo;
         this.pieces = new ReadPNG(f);
         this.dotsArray = pieces.getArrayDots();
         this.graph = new UnweightedGraph();
         this.vertexArray=new ArrayList<>();
-        this.addVertex();
-        this.addEdges();
+        this.addVertex(this.dotsArray);
+        this.addEdges(this.dotsArray);
     }
     
-    public void addVertex()
+    public MapPieces(int [][] dotsArray)//for combination of whole Map used
+    {
+        this.dotsArray=dotsArray;
+        this.graph = new UnweightedGraph();
+        this.vertexArray=new ArrayList<>();
+        this.addVertex(dotsArray);
+        this.addEdges(dotsArray);
+    }
+    
+    public void addVertex(int [][] dotsArray)
     {
         for(int i=0; i<dotsArray.length;i++)
         {
@@ -34,7 +43,7 @@ public class MapPieces
         }
     }
     
-    public void addEdges()
+    public void addEdges(int [][] dotsArray)
     {
         for(int i=0; i<dotsArray.length;i++)
         {
@@ -96,6 +105,11 @@ public class MapPieces
     public ArrayList<Integer[]> getVertexArray()
     {
         return this.vertexArray;
+    }
+    
+    public int [][] getDotsArray()
+    {
+        return this.dotsArray;
     }
     
     public int getMapNo()
