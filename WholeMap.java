@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class WholeMap<T extends Comparable<T>>
+public class WholeMap
 {
     File f1 = new File("D:\\DOWNLOAD\\image 1.png");
     File f2 = new File("D:\\DOWNLOAD\\image 2.png");
@@ -18,177 +18,97 @@ public class WholeMap<T extends Comparable<T>>
     public WholeMap() throws IOException
     {
         mp1=new MapPieces(f1,1);
-        this.changeStation(mp1);
-        mp2=new MapPieces(f2,2);
-        this.changeStation(mp2);
-        halfTopMap=this.connectGraphHorizontally(mp1, mp2);
+        int [][] dotsArray1 = mp1.getDotsArray();
+        this.changeDot(dotsArray1);
         
+        mp2=new MapPieces(f2,2);
+        int [][] dotsArray2 = mp2.getDotsArray();
+        this.changeDot(dotsArray2);
+        
+        int [][] dotsArray1_2 = this.combineArrayHorizontally(dotsArray1, dotsArray2);
         
         mp3=new MapPieces(f3,3);
-        this.changeStation(mp3);
+        int [][] dotsArray3 = mp3.getDotsArray();
+        this.changeDot(dotsArray3);
+        
         mp4=new MapPieces(f4,4);
-        halfBottomMap=this.connectGraphHorizontally(mp3, mp4);
+        int [][] dotsArray4 = mp4.getDotsArray();
+
+        int [][] dotsArray3_4 = this.combineArrayHorizontally(dotsArray3, dotsArray4);
         
-        wholeMap=this.connectGraphVertically(this.halfTopMap, this.halfBottomMap);
+        int [][] wholeMapDotsArray = this.combinateArrayVertically(dotsArray1_2, dotsArray3_4);
         
-        this.assignIndex(wholeMap);
-        this.printIndex(wholeMap);
-        
+        MapPieces wholeMap = new MapPieces(wholeMapDotsArray);
+        this.wholeMap=wholeMap.getGraph();
+//        
+//        for(int i=0; i<20; i++)
+//        {
+//            for(int j=0; j<20;j++ )
+//            {
+//                System.out.print(dotsArray3_4[i][j]+ " ");
+//            }
+//            System.out.println();
+//        }
     }
     
-    
-    public void changeStation(MapPieces mp)
+    public static void main (String [] args) throws IOException
     {
-        UnweightedVertex<Integer> temp = mp.getGraph().head;
-        Integer [] finalStation={mp.getMapNo(),19,9,3};
-        while(temp!=null)
-        {
-            if(Arrays.equals(temp.vertexInfo, finalStation))
-            {
-                temp.vertexInfo[3]=1;
-                mp.getGraph().removeAllEdges(temp.vertexInfo);
-            }
-            temp=temp.nextVertex;
+        WholeMap wm = new WholeMap();
+    }
+    
+    public int[][] combineArrayHorizontally(int[][]arr1,int[][]arr2){
+            int rows=arr1.length;
+            int cols1=arr1[0].length;
+            int cols2=arr2[0].length;
+             int[][] combinedArray=new int[rows][cols1+cols2];
+
+             for(int i=0;i<rows;i++){
+                 for(int j=0;j<cols1;j++){
+                     combinedArray[i][j]=arr1[i][j];
+                 }
+             }
+
+             for(int i=0;i<rows;i++){
+                 for(int j=0;j<cols2;j++){
+                     combinedArray[i][j+cols1]=arr2[i][j];
+                 }
+             }
+            return combinedArray;
         }
-        
-        
-        
-    }
-    
-    public UnweightedGraph<Integer> connectGraphHorizontally(MapPieces mp1, MapPieces mp2)
-    {
-        UnweightedGraph<Integer> graph1 = mp1.getGraph();
-        UnweightedGraph<Integer> graph2 = mp2.getGraph();
 
-        UnweightedVertex<Integer> vertex1 = graph1.head;
-        UnweightedVertex<Integer> vertex2 = graph2.head;
-        UnweightedVertex<Integer> vertex2_next = null;
+        public int[][] combinateArrayVertically(int[][]arr1,int[][]arr2){
+            int cols=arr1[0].length;
+            int row1=arr1.length;
+            int row2=arr2.length;
+            
+            int[][]combinedArray=new int[(row2+row1)][cols];
+            
+            for(int i=0;i<row1;i++){
+                for(int j=0;j<cols;j++){
+                    combinedArray[i][j]=arr1[i][j];
+                }
 
-        while (vertex1 != null)
-        {
-            //iterates along graph1.vertex
+            }
 
-            //stop at the most right side vertex of graph1
-            if (vertex1.vertexInfo[2] == 9 && vertex1.vertexInfo[0] == mp1.getMapNo() && vertex2.vertexInfo[0] == mp2.getMapNo())
-            {
-                //break the link between the most right side vertex of graph1 and its next vertex
-                //such that the most right side vertex can link to the most left side vertex of graph2
-                UnweightedVertex<Integer> vertex1_next = vertex1.nextVertex;
-                while (vertex2 != null)
-                {
-                    boolean statusCheck = true;
-
-                    if (vertex2.vertexInfo[2] == 0 && vertex2.vertexInfo[1] == vertex1.vertexInfo[1])
-                    {
-                        vertex1.nextVertex = vertex2;
-
-                        //add edge if it is not a obstacle
-                        if (vertex2.vertexInfo[3] != 1 && vertex1.vertexInfo[3] != 1)
-                            graph1.addUndirectedEdge(vertex1.vertexInfo, vertex2.vertexInfo);
-
-                        //break the link between the most right side vertex of graph2 and its next vertex
-                        //such that the most right side vertex can link to the most left side vertex of graph1
-                        while (vertex2.vertexInfo[1] == vertex1.vertexInfo[1] && vertex2.nextVertex != null)
-                        {
-                            if (vertex2.vertexInfo[2] == 9)
-                            {
-                                vertex2_next = vertex2.nextVertex;
-                                vertex2.nextVertex = vertex1_next;
-                                vertex2 = vertex2_next;
-                                statusCheck = false;
-                                break;
-                            }
-                            vertex2 = vertex2.nextVertex;    
-                        }
-                    }
-                    if (statusCheck)
-                        vertex2 = vertex2.nextVertex;
-
-                    // Break out of the loop if the desired condition is met
-                    if (!statusCheck)
-                        break;
+            for(int i=0;i<row2;i++){
+                for(int j=0;j<cols;j++){
+                    combinedArray[i+row1][j]=arr2[i][j];
                 }
             }
-            vertex1 = vertex1.nextVertex;
+
+            return combinedArray;
         }
 
-        graph1.size += graph2.size;
 
-        return graph1;      
-    }
 
-    public UnweightedGraph<Integer> connectGraphVertically (UnweightedGraph<Integer> graph1, UnweightedGraph<Integer> graph2)
-    {
-        UnweightedVertex<Integer> vertex1 = graph1.head;
-        UnweightedVertex<Integer> vertex2 = graph2.head;
-        
-        //Connect the Last Node of the HalfTopMap which is {2,19,9,1}
-        //to the first node of the HalfBottomMap which is {3,0,0,0}
-        while(vertex1.nextVertex!=null)
+
+        public int[][] changeDot(int[][]arr)
         {
-            vertex1=vertex1.nextVertex;
+                    arr[19][9]=1;
+                            
+                    return arr;
         }
-        vertex1.nextVertex=vertex2;
-        
-        
-        //Iterates again graph1
-        vertex1=graph1.head;
-
-        // Between the connection part, which is {1-2,19,*,*} and {3-4,0,*,*}
-        // Add the Edges if needed
-        while(vertex1!=null)
-        {
-            if(vertex1.vertexInfo[1]==19)
-            {
-                while(vertex2.vertexInfo[1]==0)
-                {
-                    if(vertex2.vertexInfo[2]==vertex1.vertexInfo[2] && vertex1.vertexInfo[3]!=1 && vertex2.vertexInfo[3]!=1)
-                    {
-                        graph1.addUndirectedEdge(vertex1.vertexInfo, vertex2.vertexInfo);
-                    }
-                    vertex2=vertex2.nextVertex;
-                }
-            }
-            vertex1=vertex1.nextVertex;
-        }
-
-        graph1.size+=graph2.size;
-
-        return graph1;
-    }
-    
-    public void assignIndex(UnweightedGraph<Integer> graph)
-    {
-        UnweightedVertex<Integer> temp = graph.head;
-        int index=0;
-        
-        while(temp!=null)
-        {
-            temp.index=index;
-            index++;
-            temp=temp.nextVertex;
-        }
-        
-    }
-    
-    public void printIndex(UnweightedGraph<Integer> graph)
-    {
-        UnweightedVertex<Integer> temp = graph.head;
-        int counter=0;
-        
-        while(temp!=null)
-        {
-            System.out.print(temp.index+" ");
-            counter++;
-            if(counter%10==0)
-            {
-                System.out.println();
-            }
-            temp=temp.nextVertex;
-        }
-        
-    }
-    
-
 }
+    
+    
 
