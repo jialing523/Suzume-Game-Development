@@ -391,28 +391,37 @@ public class UnweightedGraph <T extends Comparable<T>>
     
     
     // Depth first search for finding possible paths
-    public int printAllPathsUntil(T[] current, T[] destination,List<T[]> localPathList){               
-      int stationCount=0;                                                                                                                                                                      
-      if(Arrays.equals(current,destination)){                                                                
-          for(int i=0;i<localPathList.size();i++) {                                                          
-              if ((Integer)localPathList.get(i)[3]==2)                                                       
-                  stationCount++;                                                                            
-          }                                                                                                  
-          if(stationCount==3){                                                                               
-              numOfPaths++;}                                                                                 
-           stationCount=0;                                                                                   
-    }                                                                                                        
-                                                                                                             
-      ArrayList<T[]> ngList = this.getNeighbours(current);                                                   
-      for(int i=0;i<ngList.size();i++){                                                                      
-          if(isNotVisited(ngList.get(i),localPathList)){                                                     
-              localPathList.add(ngList.get(i));                                                              
-              printAllPathsUntil(ngList.get(i),destination,localPathList);                                   
-              localPathList.remove(ngList.get(i));                                                           
-                                                                                                             
-          }                                                                                                  
-      }           return numOfPaths;                                                                         
- }
+       public int printAllPathsUntil(T[] current, T[] destination,List<T[]> localPathList)
+    {               
+                                                                                                                                                                            
+        if(Arrays.equals(current,destination))
+        {                                                                
+
+            if(stationCount==4)
+            numOfPaths++;                                                                                 
+
+        } 
+      
+
+        if(stationCount<=4)
+        {
+            ArrayList<T[]> ngList = this.getNeighbours(current);                                                   
+            for(int i=0;i<ngList.size();i++)
+            {                                                                      
+                if(isNotVisited(ngList.get(i),localPathList))
+                {                                                     
+                    localPathList.add(ngList.get(i));  
+                    if((Integer)ngList.get(i)[3]==2)
+                        stationCount++;
+                    printAllPathsUntil(ngList.get(i),destination,localPathList);                                   
+                    localPathList.remove(ngList.get(i));
+                    if((Integer)ngList.get(i)[3]==2)
+                        stationCount--;
+                }                                                                                                  
+            }
+        }           
+        return numOfPaths;                                                                         
+    }
  
   public void printAllPaths(T[]source,T[]destination){                                                     
          List<T[]> paths=new ArrayList<>();                                                                         
