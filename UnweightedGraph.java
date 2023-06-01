@@ -9,11 +9,13 @@ public class UnweightedGraph <T extends Comparable<T>>
     UnweightedVertex<T> head;
     int size;
     int numOfPaths;
+    int stationCount;
     
     public UnweightedGraph()
     {
         head = null;
         size=0;
+        stationCount==0;
     }
     
     
