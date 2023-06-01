@@ -1,0 +1,44 @@
+package dsttt;
+
+
+public class Queue {
+	
+     private java.util.LinkedList<Integer> queue= new java.util.LinkedList<>();
+     int size=0;
+     
+     //adding to the queue at the end
+     public void enqueue(int position) {
+    	 queue.addLast(position);
+    	 size++;
+     }
+     
+     //remove the first from the queue
+     public int dequeue() {
+    	 size--;
+    	 return queue.removeFirst();
+     }
+     
+     //adding to the first of the queue
+     public void readd(int position) {
+    	 queue.addFirst(position);
+    	 size++;
+     }
+     
+     //remove the last from the queue
+     public int remove() {
+    	 size--;
+    	 return queue.removeLast();
+     }
+     
+     //check if the queue is full
+     public boolean isFull() {
+    	 
+    	 if (size==3){
+    		 return true;
+    	 }else {
+    		 return false;
+    	 }
+     }
+     
+     
+}
