@@ -336,7 +336,7 @@ public class ReversedTTT implements ActionListener{
                     }
                 }
             }
-            return bestscore;
+            return bestscore - depth;
         } else {
             int bestscore = Integer.MAX_VALUE;
             for (int i = 0; i < 9; i++) {
@@ -351,7 +351,7 @@ public class ReversedTTT implements ActionListener{
                     }
                 }
             }
-            return bestscore;
+            return bestscore + depth;
         }
     }
     
