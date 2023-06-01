@@ -1,0 +1,335 @@
+package dsttt;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class tictactoe implements ActionListener{
+	
+	Random random = new Random();
+	JFrame frame = new JFrame();
+	JPanel title_panel = new JPanel();
+	JPanel button_panel = new JPanel();
+	JPanel button_panel2 = new JPanel();
+	JPanel button_panel3 = new JPanel();
+	JLabel textfield = new JLabel();
+	
+	JButton[] diffButtons =new JButton[3];
+	JButton[] modeButtons =new JButton[2];
+	JButton[] buttons = new JButton[9];
+	
+	boolean player_turn;
+	boolean pve;
+	boolean finish=false;
+	boolean move=true;
+	
+	Queue playerMove = new Queue();
+	Queue player2Move = new Queue();
+	Queue PCMove = new Queue();
+	
+	int depth;
+	
+	
+    tictactoe(){
+    	// set up frame for choosing mode
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(800,800);
+		frame.getContentPane().setBackground(new Color(50,50,50));
+		frame.setLayout(new BorderLayout());
+		frame.setVisible(true);
+		
+		// set up textfield and title panel
+		textfield.setBackground(new Color(25,25,25));
+		textfield.setForeground(new Color(25,255,0));
+		textfield.setFont(new Font("Ink Free",Font.BOLD,75));
+		textfield.setHorizontalAlignment(JLabel.CENTER);
+		textfield.setText("Tic-Tac-Toe");
+		textfield.setOpaque(true);
+		
+		title_panel.setLayout(new BorderLayout());
+		title_panel.setBounds(0,0,800,100);
+		
+		// set up button panel and button for mode
+		button_panel3.setLayout(new GridLayout(2,1));
+		
+		for(int i=0;i<2;i++) {
+			modeButtons[i] = new JButton();
+			button_panel3.add(modeButtons[i]);
+			modeButtons[i].setFont(new Font("MV Boli",Font.BOLD,120));
+			modeButtons[i].setFocusable(false);
+			
+		}
+		modeButtons[0].setText("PvE");
+		modeButtons[1].setText("PvP");
+		
+		
+		// complete the frame
+		textfield.setText("Tic-Tac-Toe");
+		title_panel.add(textfield);
+		frame.add(title_panel,BorderLayout.NORTH);
+		frame.add(button_panel3);
+		
+		// add ActionListener to the modeButtons
+		modeButtons[0].addActionListener(
+				new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				    	pve=true;
+				    	chooseMode();
+				    }
+				}
+			);
+		modeButtons[1].addActionListener(
+				new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				    	pve=false;
+				    	frame.remove(button_panel3);
+				    	gameScreen();
+				    	firstTurn();
+				    }
+				}
+			);
+		
+		
+    }
+    
+    // start game
+    public void game(int depth){
+	    	gameScreen();
+	        firstTurn();
+	       if(!player_turn) {
+	    	   AiTurn(depth);
+	       }
+    	
+    	 
+    	
+    } 
+    // tictactoe screen
+    public void gameScreen() {
+			frame.remove(button_panel);
+		    button_panel2.setLayout(new GridLayout(3,3));	
+		  for(int i=0;i<9;i++) {
+			   buttons[i] = new JButton();
+			   button_panel2.add(buttons[i]);
+			   buttons[i].setFont(new Font("MV Boli",Font.BOLD,120));
+			   buttons[i].setFocusable(false);
+			   buttons[i].addActionListener(this);
+		  }
+		  frame.add(button_panel2);
+		 
+	}
+    
+    // choose the difficulty of the game
+    public void chooseMode() {
+    	
+    	   frame.remove(button_panel3);
+    	   
+    	  // set up button panel and button for mode
+		   button_panel.setLayout(new GridLayout(3,1));
+				
+				for(int i=0;i<3;i++) {
+					diffButtons[i] = new JButton();
+					button_panel.add(diffButtons[i]);
+					diffButtons[i].setFont(new Font("MV Boli",Font.BOLD,120));
+					diffButtons[i].setFocusable(false);
+					
+				}
+				diffButtons[0].setText("Easy");
+				diffButtons[1].setText("Normal");
+				diffButtons[2].setText("Hard");
+				
+				// complete the frame
+				textfield.setText("Choose difficulty");
+				title_panel.add(textfield);
+				frame.add(title_panel,BorderLayout.NORTH);
+				frame.add(button_panel);
+				
+				
+				// add ActionListener to the diffButtons
+				
+				diffButtons[0].addActionListener(
+				new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				    	depth=1;
+				    	game(depth);
+				    }
+				}
+	     	);
+				diffButtons[1].addActionListener(
+				new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {	
+				        depth=2;
+				    	game(depth);
+				    }
+				}
+			);
+				diffButtons[2].addActionListener(
+				new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {	
+				    	depth=6;
+				    	game(depth);
+				    }
+				}
+			);
+		
+		
+		
+       }
+    
+    public void actionPerformed(ActionEvent e) {
+	    	if(player_turn) {
+	    	     for(int i=0;i<9;i++) {
+				     if(e.getSource()==buttons[i]) {
+						if(buttons[i].getText()=="") {
+							queueup(playerMove,i);
+							buttons[i].setForeground(new Color(0,0,255));
+							buttons[i].setText("O");
+							player_turn=false;
+							textfield.setText("X turn");
+							move=true;
+							win(checkWin());
+							if(!finish) {
+							  if(pve) {
+							   AiTurn(depth);
+							  }
+							}
+						}
+					}
+				}			
+			}
+	    	else {
+	    		for(int i=0;i<9;i++) {
+				     if(e.getSource()==buttons[i]) {
+						if(buttons[i].getText()=="") {
+							queueup(player2Move,i);
+							buttons[i].setForeground(new Color(255,0,0));
+							buttons[i].setText("X");
+							player_turn=true;
+							textfield.setText("O turn");
+							move=true;
+							win(checkWin());
+							
+						}
+					}
+				}		
+	    	}
+    }
+    
+    //AI move
+    public void AiTurn(int depth) {
+	    	
+         	//AI turn
+         	move=false;
+         	int bestscore=Integer.MAX_VALUE;
+         	int index=0;
+     		for(int i=0;i<9;i++) {
+     			if(buttons[i].getText()=="") {
+     				int get=queueup(PCMove,i);
+     				buttons[i].setText("X");
+     				int score=minimax(depth-1,true,playerMove,PCMove);
+ 	    				if(unqueue(PCMove,get)) {
+ 	    					buttons[get].setText("X");
+ 	    				}
+     				buttons[i].setText("");
+     				if (score < bestscore) {
+     			          bestscore = score;
+     			          index=i;
+     			        }
+     			}
+     		}
+     		
+     		queueup(PCMove,index);
+ 			buttons[index].setForeground(new Color(255,0,0));
+ 			buttons[index].setText("X");
+ 			player_turn=true;
+ 			textfield.setText("Your turn");
+ 			move=true;
+ 			win(checkWin());
+ 			
+    }
+    //add move to the queue
+    public int queueup(Queue queue,int i) {
+	    	int get=-1;
+	    	if(queue.isFull()) {
+	    		get=queue.dequeue();
+				buttons[get].setText("");
+				queue.enqueue(i);
+			}else {
+				queue.enqueue(i);
+			}
+	    	return get;
+    }
+    
+    //undo the queueup() method
+    public boolean unqueue(Queue queue,int i) {
+	    	if(i!=-1){
+	    		queue.readd(i);
+	    		queue.remove();
+	    		return true;
+	    	}else {
+	    		queue.remove();
+	    		return false;
+	    	}
+    }
+    
+    //minimax algorithm
+    
+    public int minimax(int depth,boolean isMaximizing,Queue currPlayerMove,Queue currPCMove) {
+	    	move=false;
+	    	Queue nowPlayerMove=currPlayerMove;
+	    	Queue nowPCMove=currPCMove;
+	    	
+	    
+	    	int result=checkWin();
+	    	if(result!=0){
+	    		return result;
+	    	}
+	    	
+	    	if(isMaximizing) {
+	    		int bestscore=Integer.MIN_VALUE;
+	    		for(int i=0;i<9;i++) {
+	    			if(buttons[i].getText()=="") {
+	    				if(depth!=0) {
+	    				int get=queueup(nowPlayerMove,i);
+	    				buttons[i].setText("O");
+	    				int score=minimax(depth-1,false,nowPlayerMove,nowPCMove);
+		    				if(unqueue(nowPlayerMove,get)) {
+		    					buttons[get].setText("O");
+		    				}
+	    				buttons[i].setText("");
+	    				bestscore=Math.max(score,bestscore);
+	    				}
+	    				else {
+	    					bestscore=Math.max(0,bestscore);
+	    				}
+	    			}
+	    		}
+	    		return bestscore;
+	    	}else {
+	    		int bestscore=Integer.MAX_VALUE;
+	    		for(int i=0;i<9;i++) {
+	    			if(buttons[i].getText()=="") {
+	    				if(depth!=0) {
+	    				int get=queueup(nowPCMove,i);
+	    				buttons[i].setText("X");
+	    				int score=minimax(depth-1,true,nowPlayerMove,nowPCMove);
+		    				if(unqueue(nowPCMove,get)) {
+		    					buttons[get].setText("X");
+		    				}
+	    				buttons[i].setText("");
+	    				bestscore=Math.min(score,bestscore);
+	    				}
+	    				else {
+	    					bestscore=Math.min(0,bestscore);
+	    				}
+	    			}
+	    		}
+	    		return bestscore;
+	    	}
+    	
+    }
