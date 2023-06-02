@@ -323,74 +323,77 @@ public class UnweightedGraph <T extends Comparable<T>>
     }
     
     // breadth first search
-    public int findPaths (T[] source, T[] destination, T station)
+   public int findPaths(T[] source, T[] destination, T station,int requiredOcc)
     {
-        //Store visited path 
+        List<List<T[]>> allPaths =new ArrayList<>();
+        //Store visited path
         Queue<List<T[]>> queue = new LinkedList<>();
-        
+
         //Initialization
         List<T[]> initialPath = new ArrayList<>();
         initialPath.add(source);
-        
+
         //Store source into queue
         queue.offer(initialPath);
-        
+
         //
         int noOfPath=0,stationCounter=0;
-        
+
         while (!queue.isEmpty())
         {
             //Access the path visited before
-            List<T[]> path = queue.poll();
-            
+            List<T[]> currentPath = queue.poll();
+
             //Get the last vertex visited
-            T[] last = path.get(path.size() - 1);
+            T[] last = currentPath.get(currentPath.size() - 1);
 
             //Check if reach destination of r not
-            if (Arrays.equals(last, destination))
+            if (Arrays.equals(last, destination)&&countOccurrences(currentPath)==requiredOcc)
             {
-                //iterates the path to check the no of station visited
-                for(int i=0; i< path.size();i++)
-                {
-                    if(path.get(i)[3].compareTo(station)==0)
-                        stationCounter++;
-                }
-                
-                if(stationCounter==3)
-                {
-                    //printPath(path);
-                    noOfPath++;
-                }
+                allPaths.add(new ArrayList<>(currentPath));
+                noOfPath++;}
 
-                //Reset the value for next path used
-                stationCounter=0;
-            }
+                if(countOccurrences(currentPath)>requiredOcc) {
+                continue;  // skip exploring this path further
+                }
+                //iterates the path to check the no of station visited
+
 
             //if haven't reach the destination yet
-            
+
             //Get the neighbour vertex list
             ArrayList<T[]> ngList = this.getNeighbours(last);
-            
+
             //Check along the neighbours
             for (int i = 0; i < ngList.size(); i++)
             {
                 //step into one of its neighbours
                 //only if the neighbours vertex is not visited
-                if (isNotVisited(ngList.get(i), path))
+                if (isNotVisited(ngList.get(i), currentPath))
                 {
                     //add the neighbours vertex into the path visited before
-                    List<T[]> newPath = new ArrayList<>(path);
+                    List<T[]> newPath = new ArrayList<>(currentPath);
                     newPath.add(ngList.get(i));
-                    
+
                     //Store the incompleted path into queue again
                     queue.offer(newPath);
                 }
             }
         }
-        
+        //System.out.println(noOfPath);
+
         return noOfPath;
     }
     
+    private int countOccurrences(List<T[]> path) {
+        int count = 0;
+        for (T[] vertex : path) {
+            if ((Integer)vertex[3] == 2) {
+                count++;
+            }
+        }
+        return count;
+    }
     
     // Depth first search for finding possible paths
        public int printAllPathsUntil(T[] current, T[] destination,List<T[]> localPathList)
