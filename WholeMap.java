@@ -37,7 +37,7 @@ public class WholeMap
 
         int [][] dotsArray3_4 = this.combineArrayHorizontally(dotsArray3, dotsArray4);
         
-        int [][] wholeMapDotsArray = this.combinateArrayVertically(dotsArray1_2, dotsArray3_4);
+        wholeMapDotsArray = this.combinateArrayVertically(dotsArray1_2, dotsArray3_4);
         
         MapPieces wholeMap = new MapPieces(wholeMapDotsArray);
         this.wholeMap=wholeMap.getGraph();
