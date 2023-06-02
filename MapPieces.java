@@ -123,7 +123,7 @@ public class MapPieces
         Integer [] source = {mapNo,0,0,0};
         Integer [] destination = {mapNo,19,9,3};
         
-        return this.getGraph().findPaths(source,destination,2);
+        return this.getGraph().findPaths(source,destination,2,3);
     }
    
 }
