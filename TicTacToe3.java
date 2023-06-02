@@ -29,14 +29,16 @@ public class TicTacToe3 implements ActionListener{
         Stack<Integer> stack = new Stack<>();
         
 	boolean player_turn;
-	boolean finish=false;
+	public boolean finish=false;
 	boolean move=true;
-	
+	public int gameStatus=-1;
+        
 	int depth;
         
-    TicTacToe3(){
+    public TicTacToe3(){
     	//set up frame for choosing mode
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+                //frame.setDefaultCloseOperation();
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
 		frame.setLayout(new BorderLayout());
@@ -154,8 +156,7 @@ public class TicTacToe3 implements ActionListener{
 		
  }
  public void actionPerformed(ActionEvent e) {
-   
-     if (e.getSource() == resButton) {
+    if (e.getSource() == resButton) {
         resetGame();
     } else if (player_turn) {
         for (int i = 0; i < 25; i++) {
@@ -169,10 +170,15 @@ public class TicTacToe3 implements ActionListener{
                     win(checkWin());
                     if (!finish) {
                         AiTurn(depth);
+                        win(checkWin());
                     }
                 }
             }
         }
+    }
+
+    if (finish) {
+        frame.dispose(); // Close the frame
     }
 }
  
@@ -313,6 +319,7 @@ public void enableButtons() {
 			}
 			textfield.setText("You lose");
 			finish=true;
+                        gameStatus=0;
 		}
 		else if(j==-1) {
 			for(int i=0;i<25;i++) {
@@ -320,12 +327,13 @@ public void enableButtons() {
 			}
 			textfield.setText("You wins");
 			finish=true;
+                        gameStatus=1;
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
 				buttons[i].setEnabled(false);
 			}
 			textfield.setText("The Game is Draw");
-			finish=true;
+			gameStatus=2;
 		}
 	}
 
