@@ -478,7 +478,7 @@ public class UnweightedGraph <T extends Comparable<T>>
     
     
     // SHORTEST PATH
-        public int findShortestPaths(T[] source, T[] destination, T station,int requiredOcc)
+        public List<List<T[]>> findShortestPaths(T[] source, T[] destination, T station,int requiredOcc)
     {
         List<List<T[]>> allPaths =new ArrayList<>();
         //Store visited path
@@ -548,7 +548,7 @@ public class UnweightedGraph <T extends Comparable<T>>
 
             //System.out.println(noOfPath);
 
-        }return noOfPath;
+        }return allPaths;
     }             
             
 }
