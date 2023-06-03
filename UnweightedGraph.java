@@ -10,6 +10,7 @@ public class UnweightedGraph <T extends Comparable<T>>
     int size;
     int numOfPaths;
     int stationCount;
+    Map<T[], Integer> distance;
     
     public UnweightedGraph()
     {
@@ -473,6 +474,79 @@ public class UnweightedGraph <T extends Comparable<T>>
         return size;
     }
     
-                     
+    
+    // SHORTEST PATH
+        public int findShortestPaths(T[] source, T[] destination, T station,int requiredOcc)
+    {
+        List<List<T[]>> allPaths =new ArrayList<>();
+        //Store visited path
+        Queue<List<T[]>> queue = new LinkedList<>();
+        distance=new HashMap<>();
+
+        //Initialization
+        List<T[]> initialPath = new ArrayList<>();
+        initialPath.add(source);
+        distance.put(source,0);        // start at source
+        //Store source into queue
+        queue.offer(initialPath);
+
+        //
+        int noOfPath=0,stationCounter=0;
+         int shortestDistance=0;
+        boolean foundRequiredOccurrences = true;
+
+        while (!queue.isEmpty()) {
+            //Access the path visited before
+            List<T[]> currentPath = queue.poll();
+
+            //Get the last vertex visited
+            T[] last = currentPath.get(currentPath.size() - 1);
+
+            //Check if reach destination of r not
+            if (Arrays.equals(last, destination) && countOccurrences(currentPath) == requiredOcc) {
+                if (foundRequiredOccurrences == true) {
+                    allPaths.add(new ArrayList<>(currentPath));
+                    noOfPath++;
+                    shortestDistance = distance.get(last);
+                    foundRequiredOccurrences = false;
+                } else {
+                    if (distance.get(last) <= shortestDistance) {
+                        allPaths.add(new ArrayList<>(currentPath));
+                        noOfPath++;
+                    }
+
+
+                }       }
+
+                if (countOccurrences(currentPath) > requiredOcc) {
+                    continue;  // skip exploring this path further
+                }
+                //iterates the path to check the no of station visited
+
+
+                //if haven't reach the destination yet
+
+                //Get the neighbour vertex list
+                ArrayList<T[]> ngList = this.getNeighbours(last);
+
+                //Check along the neighbours
+                for (int i = 0; i < ngList.size(); i++) {
+                    //step into one of its neighbours
+                    //only if the neighbours vertex is not visited
+                    if (isNotVisited(ngList.get(i), currentPath)) {
+                        //add the neighbours vertex into the path visited before
+                        List<T[]> newPath = new ArrayList<>(currentPath);
+                        newPath.add(ngList.get(i));
+                        distance.put(ngList.get(i), distance.get(last) + 1);
+
+                        //Store the incompleted path into queue again
+                        queue.offer(newPath);
+                    }
+                }
+
+            //System.out.println(noOfPath);
+
+        }return noOfPath;
+    }             
             
 }
