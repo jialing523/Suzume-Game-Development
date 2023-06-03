@@ -18,7 +18,7 @@ public class UnweightedGraph <T extends Comparable<T>>
     {
         head = null;
         size=0;
-        stationCount==0;
+        stationCount=0;
     }
     
     
