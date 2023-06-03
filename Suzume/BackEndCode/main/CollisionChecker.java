@@ -2,18 +2,22 @@ package main;
 
 import Entity.Entity;
 import static java.awt.image.ImageObserver.ALLBITS;
+import java.util.ArrayList;
 
 public class CollisionChecker
 {
     GamePanel gp;
     public TicTacToe3 ttt3;
-    int previousStationCol,previousStationRow,previousPlayerX,previousPlayerY,winStation;
+    ArrayList<Integer> previousStationCol,previousStationRow,previousPlayerX,previousPlayerY;
+    int winStation;
 
     public CollisionChecker(GamePanel gp)
     {
         this.gp=gp;
-        previousStationCol=previousPlayerX=0;
-        previousStationRow=previousPlayerY=19*gp.tileSize;
+        previousStationCol=new ArrayList<>();
+        previousStationRow=new ArrayList<>();
+        previousPlayerX=new ArrayList<>();
+        previousPlayerY=new ArrayList<>();
         winStation=0;
         
     }
@@ -115,21 +119,32 @@ public class CollisionChecker
                         
                         if(ttt3.gameStatus==1)
                         {
-                            gp.tileM.mapTileNum[entityRow][entityCol]=0;
+                            gp.tileM.mapTileNum[entityRow][entityCol]=4;
                             
-                            previousStationCol=entityCol;
-                            previousStationRow=entityRow;
                             
-                            previousPlayerX=entity.x;
-                            previousPlayerY=entity.y;
+                            previousStationRow.add(entityRow);
+                            previousStationCol.add(entityCol);
+                            
+   
+                            previousPlayerX.add(entity.x);
+                            previousPlayerY.add(entity.y);
+                            winStation++;
+                           
                         }
                         else if(winStation!=0)
                         {
                             winStation--;
-                            gp.tileM.mapTileNum[previousStationRow][previousStationCol]=2;
                             
-                            entity.x=previousPlayerX;
-                            entity.y=previousPlayerY;
+                            gp.tileM.mapTileNum[previousStationRow.get(winStation)][previousStationCol.get(winStation)]=2;
+                            previousStationRow.remove(winStation);
+                            previousStationCol.remove(winStation);
+                            
+                            entity.x=previousPlayerX.get(winStation);
+                            entity.y=previousPlayerY.get(winStation);
+                            previousPlayerX.remove(winStation);
+                            previousPlayerY.remove(winStation);
+                            
+                            
                         }
                         else
                         {
@@ -161,20 +176,28 @@ public class CollisionChecker
                         
                         if(ttt3.gameStatus==1)
                         {
-                            gp.tileM.mapTileNum[entityRow][entityCol]=0;
-                            previousStationCol=entityCol;
-                            previousStationRow=entityRow;
+                            gp.tileM.mapTileNum[entityRow][entityCol]=4;
                             
-                            previousPlayerX=entity.x;
-                            previousPlayerY=entity.y;
+                            previousStationCol.add(entityCol);
+                            previousStationRow.add(entityRow);
+                            
+                            previousPlayerX.add(entity.x);
+                            previousPlayerY.add(entity.y);
+                            winStation++;
+                            
                         }
                         else if(winStation!=0)
                         {
                             winStation--;
-                            gp.tileM.mapTileNum[previousStationRow][previousStationCol]=2;
+                            gp.tileM.mapTileNum[previousStationRow.get(winStation)][previousStationCol.get(winStation)]=2;
+                            previousStationRow.remove(winStation);
+                            previousStationCol.remove(winStation);
                             
-                            entity.x=previousPlayerX;
-                            entity.y=previousPlayerY;
+                            entity.x=previousPlayerX.get(winStation);
+                            entity.y=previousPlayerY.get(winStation);
+                            previousPlayerX.remove(winStation);
+                            previousPlayerY.remove(winStation);
+                            
                         }
                         else
                         {
@@ -206,20 +229,28 @@ public class CollisionChecker
                         entity.reachStation=false;
                         if(ttt3.gameStatus==1)
                         {
-                            gp.tileM.mapTileNum[entityRow][entityCol]=0;
-                            previousStationCol=entityCol;
-                            previousStationRow=entityRow;
+                            gp.tileM.mapTileNum[entityRow][entityCol]=4;
                             
-                            previousPlayerX=entity.x;
-                            previousPlayerY=entity.y;
+                            previousStationCol.add(entityCol);
+                            previousStationRow.add(entityRow);
+                            
+                            previousPlayerX.add(entity.x);
+                            previousPlayerY.add(entity.y);
+                            winStation++;
+                            
                         }
                         else if(winStation!=0)
                         {
                             winStation--;
-                            gp.tileM.mapTileNum[previousStationRow][previousStationCol]=2;
+                            gp.tileM.mapTileNum[previousStationRow.get(winStation)][previousStationCol.get(winStation)]=2;
+                            previousStationRow.remove(winStation);
+                            previousStationCol.remove(winStation);
                             
-                            entity.x=previousPlayerX;
-                            entity.y=previousPlayerY;
+                            entity.x=previousPlayerX.get(winStation);
+                            entity.y=previousPlayerY.get(winStation);
+                            previousPlayerX.remove(winStation);
+                            previousPlayerY.remove(winStation);
+                            
                         }
                         else
                         {
@@ -251,20 +282,30 @@ public class CollisionChecker
                         entity.reachStation=false;
                         if(ttt3.gameStatus==1)
                         {
-                            gp.tileM.mapTileNum[entityRow][entityCol]=0;
-                            previousStationCol=entityCol;
-                            previousStationRow=entityRow;
+                            gp.tileM.mapTileNum[entityRow][entityCol]=4;
                             
-                            previousPlayerX=entity.x;
-                            previousPlayerY=entity.y;
+                            previousStationCol.add(entityCol);
+                            previousStationRow.add(entityRow);
+                            
+                            
+                            previousPlayerX.add(entity.x);
+                            previousPlayerY.add(entity.y);
+                            winStation++;
+                            
                         }
                         else if(winStation!=0)
                         {
                             winStation--;
-                            gp.tileM.mapTileNum[previousStationRow][previousStationCol]=2;
+                            gp.tileM.mapTileNum[previousStationRow.get(winStation)][previousStationCol.get(winStation)]=2;
+                            previousStationRow.remove(winStation);
+                            previousStationCol.remove(winStation);
                             
-                            entity.x=previousPlayerX;
-                            entity.y=previousPlayerY;
+                            entity.x=previousPlayerX.get(winStation);
+                            entity.y=previousPlayerY.get(winStation);
+                            previousPlayerX.remove(winStation);
+                            previousPlayerY.remove(winStation);
+                            
+                            
                         }
                         else
                         {
@@ -280,5 +321,7 @@ public class CollisionChecker
         }
         
     }
+    
+ 
 
 }
