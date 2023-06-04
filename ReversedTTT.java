@@ -1,3 +1,5 @@
+package l.dsasg;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -6,11 +8,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import java.util.Stack;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class ReversedTTT implements ActionListener{
     
@@ -51,12 +55,13 @@ public class ReversedTTT implements ActionListener{
 		textfield.setForeground(new Color(25,255,0));
 		textfield.setFont(new Font("Ink Free",Font.BOLD,75));
 		textfield.setHorizontalAlignment(JLabel.CENTER);
-		textfield.setText("Tic-Tac-Toe");
+		textfield.setText("Reversed Tic-Tac-Toe");
 		textfield.setOpaque(true);
 		
 		title_panel.setLayout(new BorderLayout());
 		title_panel.setBounds(0,0,800,100);
                 
+                displayGameIntroduction();
                 // set up button panel and button for mode
 		button_panel3.setLayout(new GridLayout(2,1));
 		
@@ -135,6 +140,38 @@ public class ReversedTTT implements ActionListener{
        if(!player_turn) {
     	   AiTurn(depth);
        }
+    }
+    private static void displayGameIntroduction() {
+        String text = "Misère/Reverse Tic-Tac-Toe\n\n" +
+                "A reverse game of TTT in a 3x3 square, but in reverse, players take turns placing shapes either a cross (X) or a nought (O), the loser is the first player to place 3 of their shape in either a horizontal, vertical, or diagonal row, automatically giving the other player the win.";
+
+        JFrame frame = new JFrame("Game Introduction");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JTextArea textArea = new JTextArea(text);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        panel.add(textArea, BorderLayout.CENTER);
+
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the frame when the Close button is clicked
+            }
+        });
+        panel.add(closeButton, BorderLayout.SOUTH);
+
+        frame.setContentPane(panel);
+        frame.setLocationRelativeTo(null); // Center the frame on the screen
+        frame.setVisible(true);
+
+        
     }
     
      // tictactoe screen
