@@ -5,10 +5,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class tictactoe implements ActionListener{
 	
@@ -55,6 +57,8 @@ public class tictactoe implements ActionListener{
 		title_panel.setLayout(new BorderLayout());
 		title_panel.setBounds(0,0,800,100);
 		
+		displayGameIntroduction();
+		
 		// set up button panel and button for mode
 		button_panel3.setLayout(new GridLayout(2,1));
 		
@@ -96,6 +100,39 @@ public class tictactoe implements ActionListener{
 			);
 		
 		
+    }
+    private static void displayGameIntroduction() {
+        String text = "Three Mark Tic-Tac-Toe\n\n" +
+                "A regular game of TTT in a 3x3 square, but only maximum of three O's and three X's would stay on the grid."
+                + "For example, the fourth O or X will be continue placing in the grid, but the first placing O or X will be removed. ";
+        
+
+        JFrame frame = new JFrame("Game Introduction");
+        frame.setSize(400, 300);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JTextArea textArea = new JTextArea(text);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        panel.add(textArea, BorderLayout.CENTER);
+
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the frame when the Close button is clicked
+            }
+        });
+        panel.add(closeButton, BorderLayout.SOUTH);
+
+        frame.setContentPane(panel);
+        frame.setLocationRelativeTo(null); // Center the frame on the screen
+        frame.setVisible(true);
+
+        
     }
     
     // start game
@@ -334,6 +371,8 @@ public class tictactoe implements ActionListener{
     	
     }
     
+    
+    
     //determine who play the first move
     public void firstTurn() {
     	
@@ -515,3 +554,4 @@ public class tictactoe implements ActionListener{
 		}
 	}
 }
+
