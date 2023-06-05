@@ -1,10 +1,16 @@
+
 package Tile;
 
+import BackEnd.ShortestPathMap;
 import java.awt.Graphics2D;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import main.GamePanel;
 import BackEnd.WholeMap;
+import java.awt.Color;
+import java.awt.Font;
+import java.io.File;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -12,14 +18,16 @@ public class TileManager
 {
     GamePanel gp;
     public Tile [] tile;
-    WholeMap wm;
+    //WholeMap wm;
+    ShortestPathMap spm;
     public int [][] mapTileNum;
+    
         
     
     public TileManager(GamePanel gp)
     {
         try {
-            this.wm= new WholeMap();
+        spm= new ShortestPathMap();
         } catch (IOException ex) {
             Logger.getLogger(TileManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -38,6 +46,7 @@ public class TileManager
         {
             tile[0]= new Tile();
             tile[0].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/grass.png"));
+            tile[0].collision=true;
             
             tile[1]= new Tile();
             tile[1].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/wall.png"));
@@ -50,6 +59,13 @@ public class TileManager
             
             tile[3]= new Tile();
             tile[3].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/final_station.png"));
+            
+            tile[4]= new Tile();
+            tile[4].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/road.png"));
+            
+            tile[5]= new Tile();
+            tile[5].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/tree.png"));
+            tile[5].collision=true;
         }
         catch(IOException e)
         {
@@ -59,15 +75,70 @@ public class TileManager
     
     public void loadMap()
     {
+        Random rand = new Random();
+        int mapNo = rand.nextInt(6);
+        
+        System.out.println(mapNo);
 
-            
-            for(int i=0; i<wm.getWholeMapDotsArray().length;i++)
-            {
-                for(int j=0; j<wm.getWholeMapDotsArray()[i].length;j++)
+        switch (mapNo)
+        {
+            case 0:
+                for(int i=0; i<spm.map1.length;i++)
                 {
-                    mapTileNum[19-j][i] = wm.getWholeMapDotsArray()[i][j];
+                    for(int j=0; j<spm.map1[i].length;j++)
+                    {
+                        mapTileNum[19-j][i] = spm.map1[i][j];
+                    }
                 }
-            }
+                break;
+            case 1:
+                for(int i=0; i<spm.map2.length;i++)
+                {
+                    for(int j=0; j<spm.map2[i].length;j++)
+                    {
+                        mapTileNum[19-j][i] = spm.map2[i][j];
+                    }
+                }
+                break;
+            case 2:
+                for(int i=0; i<spm.map3.length;i++)
+                {
+                    for(int j=0; j<spm.map3[i].length;j++)
+                    {
+                        mapTileNum[19-j][i] = spm.map3[i][j];
+                    }
+                }
+                break;
+            case 3:
+                for(int i=0; i<spm.map4.length;i++)
+                {
+                    for(int j=0; j<spm.map4[i].length;j++)
+                    {
+                        mapTileNum[19-j][i] = spm.map4[i][j];
+                    }
+                }
+                break;
+            case 4:
+                for(int i=0; i<spm.map5.length;i++)
+                {
+                    for(int j=0; j<spm.map5[i].length;j++)
+                    {
+                        mapTileNum[19-j][i] = spm.map5[i][j];
+                    }
+                }
+                break;
+            case 5:
+                for(int i=0; i<spm.map6.length;i++)
+                {
+                    for(int j=0; j<spm.map6[i].length;j++)
+                    {
+                        mapTileNum[19-j][i] = spm.map6[i][j];
+                    }
+                }
+                break;   
+        }
+            
+            
                      
         
         
@@ -105,6 +176,17 @@ public class TileManager
                         g2.drawImage(tile[3].image, x, y,gp.tileSize,gp.tileSize,null);
                         break;
                     }
+                    case 4:
+                    {
+                        g2.drawImage(tile[4].image, x, y,gp.tileSize,gp.tileSize,null);
+                        break;
+                    }
+                    case 5:
+                    {
+                        g2.drawImage(tile[5].image, x, y,gp.tileSize,gp.tileSize,null);
+                        break;
+                    }
+                        
 
                 }
                 x += gp.tileSize;
@@ -112,6 +194,7 @@ public class TileManager
             y+=gp.tileSize;
             x=0;
         }
- 
     }
+    
+    
 }
