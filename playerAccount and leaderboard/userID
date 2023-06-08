@@ -4,15 +4,17 @@ public class userID {
 
 	public HashMap<String,String> loginInfo=new HashMap<String,String>();
 	
+	// already created account, use for testing only..
 	userID(){
 		loginInfo.put("Bro","pizza");
 		loginInfo.put("Brometheus","PASSWORD");
 		loginInfo.put("BroCode","abc123");
 	}
+	// get user info
 	public HashMap getLoginInfo() {
 		return loginInfo;
 	}
-	
+	 // sign up new user
 	public void signUp(String user,String password) {
 		loginInfo.put(user,password);
 	}
