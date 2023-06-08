@@ -4,7 +4,9 @@ import java.util.*;
 import javax.swing.*;
 
 public class loginPage implements ActionListener{
-    userID userid=new userID();
+
+        userID userid=new userID();
+	
 	JFrame frame = new JFrame();
 	JButton loginButton = new JButton("Login");
 	JButton resetButton = new JButton("Clear");
@@ -20,7 +22,7 @@ public class loginPage implements ActionListener{
 	HashMap<String,String> logininfo = new HashMap<String,String>();
 	
 	loginPage(){
-		
+		// set up label and button
         label.setBounds(150,25,200,50);
         label.setFont(new Font(null,Font.ITALIC,30));
 		userIDLabel.setBounds(50,100,75,25);
@@ -44,7 +46,7 @@ public class loginPage implements ActionListener{
 		signUpButton.setFocusable(false);
 		signUpButton.addActionListener(this);
 		
-		
+		// set up frame
 		frame.add(label);
 		frame.add(userIDLabel);
 		frame.add(userPasswordLabel);
@@ -73,9 +75,11 @@ public class loginPage implements ActionListener{
 			String password = String.valueOf(userPasswordField.getPassword());
 			
 		  if(loginButton.getText()=="Login") {
+		         // get user info
 			  logininfo=userid.getLoginInfo();
 			if(logininfo.containsKey(userId)) {
 				if(logininfo.get(userId).equals(password)) {
+				   // log in
 					messageLabel.setForeground(Color.green);
 					messageLabel.setText("Login successful");
 					frame.dispose();
@@ -94,10 +98,12 @@ public class loginPage implements ActionListener{
 			}
 	      }
 		  else if(loginButton.getText()=="Confirm") {
+		    // check if user already exists
 		   if(logininfo.containsKey(userId)) {
 			   messageLabel.setForeground(Color.red);
 				messageLabel.setText("username already exists");
 		   }else {
+		       //add new user and login
 			  userid.signUp(userId, password);
 			  frame.dispose();
 			  welcomePage welcomepage = new welcomePage(userId);
@@ -105,10 +111,13 @@ public class loginPage implements ActionListener{
 		  }
 		}
 		if(e.getSource()==signUpButton) {
+		        
 			if(signUpButton.getText()=="Sign Up") {
+			// turn to sign up frame
 				clearText();
 				signUpframe();
 			}else {
+			// turn to login frame
 				loginframe();
 			}
 			
