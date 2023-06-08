@@ -1,0 +1,21 @@
+import java.util.HashMap;
+
+public class userID {
+
+	public HashMap<String,String> loginInfo=new HashMap<String,String>();
+	
+	userID(){
+		loginInfo.put("Bro","pizza");
+		loginInfo.put("Brometheus","PASSWORD");
+		loginInfo.put("BroCode","abc123");
+	}
+	public HashMap getLoginInfo() {
+		return loginInfo;
+	}
+	
+	public void signUp(String user,String password) {
+		loginInfo.put(user,password);
+	}
+	
+	
+}
