@@ -1,4 +1,4 @@
-package dsttt;
+package main;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class tictactoe implements ActionListener{
+public class TicTacToe1 implements ActionListener{
 	
 	Random random = new Random();
 	JFrame frame = new JFrame();
@@ -31,20 +31,21 @@ public class tictactoe implements ActionListener{
 	boolean finish=false;
 	boolean move=true;
 	
-	Queue playerMove = new Queue();
-	Queue player2Move = new Queue();
-	Queue PCMove = new Queue();
+	TicTacToe1Queue playerMove = new TicTacToe1Queue();
+	TicTacToe1Queue player2Move = new TicTacToe1Queue();
+	TicTacToe1Queue PCMove = new TicTacToe1Queue();
 	
-	int depth;
+	int depth, gameStatus=-1;
 	
 	
-    tictactoe(){
+    TicTacToe1(){
     	// set up frame for choosing mode
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
 		frame.setLayout(new BorderLayout());
 		frame.setVisible(true);
+                frame.setLocationRelativeTo(null);
 		
 		// set up textfield and title panel
 		textfield.setBackground(new Color(25,25,25));
@@ -290,7 +291,7 @@ public class tictactoe implements ActionListener{
  			
     }
     //add move to the queue
-    public int queueup(Queue queue,int i) {
+    public int queueup(TicTacToe1Queue queue,int i) {
 	    	int get=-1;
 	    	if(queue.isFull()) {
 	    		get=queue.dequeue();
@@ -303,7 +304,7 @@ public class tictactoe implements ActionListener{
     }
     
     //undo the queueup() method
-    public boolean unqueue(Queue queue,int i) {
+    public boolean unqueue(TicTacToe1Queue queue,int i) {
 	    	if(i!=-1){
 	    		queue.readd(i);
 	    		queue.remove();
@@ -316,10 +317,10 @@ public class tictactoe implements ActionListener{
     
     //minimax algorithm
     
-    public int minimax(int depth,boolean isMaximizing,Queue currPlayerMove,Queue currPCMove) {
+    public int minimax(int depth,boolean isMaximizing,TicTacToe1Queue currPlayerMove,TicTacToe1Queue currPCMove) {
 	    	move=false;
-	    	Queue nowPlayerMove=currPlayerMove;
-	    	Queue nowPCMove=currPCMove;
+	    	TicTacToe1Queue nowPlayerMove=currPlayerMove;
+	    	TicTacToe1Queue nowPCMove=currPCMove;
 	    	
 	    
 	    	int result=checkWin();
@@ -398,10 +399,13 @@ public class tictactoe implements ActionListener{
 			}
 		  if(pve) {
 			textfield.setText("You wins");
+                        gameStatus=1;
 		  }else {
 			  textfield.setText("O wins");
+                          gameStatus=1;
 		  }
 			finish=true;
+                        frame.dispose();
 		}
 		else if(j==-1) {
 			for(int i=0;i<9;i++) {
@@ -409,10 +413,13 @@ public class tictactoe implements ActionListener{
 			}
 			 if(pve) {
 					textfield.setText("You lose");
+                                        gameStatus=0;
 				  }else {
 					  textfield.setText("X wins");
+                                          gameStatus=0;
 				  }
 			finish=true;
+                        frame.dispose();
 		}
 	}
 
@@ -553,5 +560,9 @@ public class tictactoe implements ActionListener{
 			return 0;
 		}
 	}
+        
+        public static void main (String [] args)
+        {
+            TicTacToe1 ttt1 = new TicTacToe1();
+        }
 }
-
