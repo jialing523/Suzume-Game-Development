@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import main.KeyHandler;
 
 public class TileManager
 {
@@ -21,10 +22,11 @@ public class TileManager
     //WholeMap wm;
     ShortestPathMap spm;
     public int [][] mapTileNum;
-    
+    KeyHandler kh = new KeyHandler(this.gp);
+    public int mapNo;
         
     
-    public TileManager(GamePanel gp)
+    public TileManager(GamePanel gp,int mapNo)
     {
         try {
         spm= new ShortestPathMap();
@@ -34,7 +36,7 @@ public class TileManager
         this.gp=gp;
         //10 kinds of tile
         tile= new Tile[10];
-        
+        this.mapNo=mapNo;
         mapTileNum = new int [20][40];
         this.getTileImage();
         this.loadMap();
@@ -59,6 +61,8 @@ public class TileManager
             
             tile[3]= new Tile();
             tile[3].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/final_station.png"));
+            tile[3].collision=true;
+            tile[3].finalStation=true;
             
             tile[4]= new Tile();
             tile[4].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/road.png"));
@@ -66,6 +70,10 @@ public class TileManager
             tile[5]= new Tile();
             tile[5].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/tree.png"));
             tile[5].collision=true;
+            
+            tile[6]= new Tile();
+            tile[6].image =ImageIO.read(getClass().getResourceAsStream("/Tiles/red_flag.png"));
+            
         }
         catch(IOException e)
         {
@@ -75,10 +83,12 @@ public class TileManager
     
     public void loadMap()
     {
+        if(this.mapNo==-1)
+        {
         Random rand = new Random();
-        int mapNo = rand.nextInt(6);
+        this.mapNo = rand.nextInt(6);
+        }
         
-        System.out.println(mapNo);
 
         switch (mapNo)
         {
@@ -184,6 +194,11 @@ public class TileManager
                     case 5:
                     {
                         g2.drawImage(tile[5].image, x, y,gp.tileSize,gp.tileSize,null);
+                        break;
+                    }
+                    case 6:
+                    {
+                        g2.drawImage(tile[6].image, x, y,gp.tileSize,gp.tileSize,null);
                         break;
                     }
                         
