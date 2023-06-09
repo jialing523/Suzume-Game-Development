@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public class TicTacToe3 implements ActionListener{
 	Random random = new Random();
@@ -26,19 +28,88 @@ public class TicTacToe3 implements ActionListener{
 	
 	JButton[] buttons = new JButton[25];
         JButton undoButton = new JButton();
+        
+       
+        
         Stack<Integer> stack = new Stack<>();
         
 	boolean player_turn;
-	public boolean finish=false;
+	boolean finish=false;
 	boolean move=true;
-	public int gameStatus=-1;
-        
+	
 	int depth;
+ 
+    private static void createAndShowGUI() {
+        // Create the main frame
+        JFrame frame = new JFrame("Tic-Tac-Toe 5x5 Rules");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(650, 400);
+        frame.getContentPane().setBackground(new Color(255, 239, 213));
+        frame.setLayout(new BorderLayout());
+	//frame.setVisible(true);
         
-    public TicTacToe3(){
-    	//set up frame for choosing mode
+        // Create a label to display the rules
+        JLabel titleLabel = new JLabel("<html>A regular game of Tic-Tac-Toe is played on a 5x5 square.<br></html><br><br><br>");
+        titleLabel.setBounds(10,15,650,500);
+        titleLabel.setBackground(new Color(5,255,0));
+        titleLabel.setForeground(new Color(25,25,255));
+        titleLabel.setFont(new Font("TimesRoman Bold",Font.BOLD,35));
+        titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        titleLabel.setVerticalAlignment(SwingConstants.TOP);
+        
+        JLabel rulesLabel = new JLabel("<html><br>1. Players take turns placing shapes, either a cross (X) or a nought (O),on an empty cell.<br><br>"
+                + "2. The first player to place 3 of their shapein a horizontal, vertical, or diagonal row wins the game.</html>");
+        rulesLabel.setBounds(30,0,200,500);
+        
+        rulesLabel.setFont(new Font("Ink Free",Font.BOLD,25));
+        rulesLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        rulesLabel.setVerticalAlignment(SwingConstants.CENTER);
+        
+        // Create a panel to hold the button
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
     
-                //frame.setDefaultCloseOperation();
+        // Create the button
+        JButton proceedButton = new JButton("Start Games!!");
+        proceedButton.setBounds(20,20,20,20);
+        proceedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Call the method to create and show the next GUI
+               TicTacToe3 ttt = new TicTacToe3();
+                
+                // Close the current GUI
+                frame.dispose();
+            }
+        });
+    
+        // Add the button to the button panel
+        buttonPanel.add(proceedButton);
+
+      
+        // Add the label to the frame
+        frame.getContentPane().add(titleLabel);
+        
+        // Add the label to the frame
+        frame.getContentPane().add(rulesLabel);
+        
+       frame.add(buttonPanel, BorderLayout.SOUTH);
+        
+        // Center the frame on the screen
+        frame.setLocationRelativeTo(null);
+        
+        // Display the frame
+        frame.setVisible(true);
+        
+        
+   
+        
+    }     
+        
+        
+    TicTacToe3(){
+    	//set up frame for choosing mode
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
 		frame.setLayout(new BorderLayout());
@@ -156,7 +227,8 @@ public class TicTacToe3 implements ActionListener{
 		
  }
  public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == resButton) {
+   
+     if (e.getSource() == resButton) {
         resetGame();
     } else if (player_turn) {
         for (int i = 0; i < 25; i++) {
@@ -170,15 +242,10 @@ public class TicTacToe3 implements ActionListener{
                     win(checkWin());
                     if (!finish) {
                         AiTurn(depth);
-                        win(checkWin());
                     }
                 }
             }
         }
-    }
-
-    if (finish) {
-        frame.dispose(); // Close the frame
     }
 }
  
@@ -319,7 +386,6 @@ public void enableButtons() {
 			}
 			textfield.setText("You lose");
 			finish=true;
-                        gameStatus=0;
 		}
 		else if(j==-1) {
 			for(int i=0;i<25;i++) {
@@ -327,13 +393,12 @@ public void enableButtons() {
 			}
 			textfield.setText("You wins");
 			finish=true;
-                        gameStatus=1;
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
 				buttons[i].setEnabled(false);
 			}
 			textfield.setText("The Game is Draw");
-			gameStatus=2;
+			finish=true;
 		}
 	}
 
@@ -552,7 +617,11 @@ public void enableButtons() {
 	}
         
         public static void main(String[] args) {
-        TicTacToe3 ttt = new TicTacToe3();
+       
+       SwingUtilities.invokeLater(TicTacToe3::createAndShowGUI);
+       // TicTacToe3 ttt = new TicTacToe3();
+       
     }
         
 }
+
