@@ -15,7 +15,6 @@ public class Player extends Entity
 {
     GamePanel gp;
     KeyHandler keyH;
-    TicTacToe3 ttt3;
     int stationCounter;
    
     
@@ -86,8 +85,8 @@ public class Player extends Entity
     collisionOn = false;
     gp.cChecker.checkTile(this);
     gp.cChecker.checkStation(this);
+    gp.cChecker.checkFinal(this);
 
-    
     
 
     if (!collisionOn&&!reachStation) {
