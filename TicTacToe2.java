@@ -1,4 +1,3 @@
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -311,7 +310,7 @@ public class TicTacToe2 implements ActionListener{
 		}
 		else if(x==1&&pve==true){
 			player_turn=false;
-			textfield.setText("PC turn");
+                        AiTurn(depth);
 		}else if(x==0&&pve==false){
 			player_turn=false;
 			textfield.setText("O turn");
@@ -419,24 +418,9 @@ public class TicTacToe2 implements ActionListener{
             buttons[i].setFocusable(false);
             buttons[i].addActionListener(this);
         }
-
-        player_turn = random.nextInt(2) == 0;
-        if (player_turn&&pve==true) {
-            textfield.setText("Your turn");
-        }else if(!player_turn&&pve==true){
-            textfield.setText("PC turn");
-            AiTurn(depth);
-        }else if (player_turn&&pve==false) {
-            player_turn = true;
-            textfield.setText("X turn");
-        }else if(!player_turn&&pve==false){
-            player_turn = false;
-            textfield.setText("O turn");
-        }
-
+        firstTurn();
         finish = false;
         undoButton.setEnabled(true); // Disable the "Undo" button
-
         frame.add(button_panel2);
         frame.revalidate();
         frame.repaint();
@@ -472,14 +456,8 @@ public class TicTacToe2 implements ActionListener{
                 JOptionPane.showMessageDialog(frame, "Recommendation: Set up situations where your opponent is forced to make a move that will inevitably lead to a line.  ","You lose! Better luck next time.",  JOptionPane.INFORMATION_MESSAGE);
             frame.dispose();}
             }else if(j==2) {
-
-                    for(int i=0;i<9;i++) {
-                            buttons[i].setEnabled(false);
-                    }
-                    undoButton.setEnabled(false); // Disable the "Undo" button
                     textfield.setText("The Game is Draw");
                     displayGameDraw();
-                    finish=false;
                     resetGame();
             }
     }
