@@ -40,7 +40,7 @@ public class TicTacToe3 implements ActionListener{
 	
 	int depth;
  
-    private static void createAndShowGUI() {
+    public void createAndShowGUI() {
         // Create the main frame
         JFrame frame = new JFrame("Tic-Tac-Toe 5x5 Rules");
         frame.setSize(650, 400);
@@ -108,7 +108,8 @@ public class TicTacToe3 implements ActionListener{
         
         
     TicTacToe3(){
-    	//set up frame for choosing mode
+        this.createAndShowGUI();
+                //set up frame for choosing mode
                 //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
@@ -396,6 +397,7 @@ public void enableButtons() {
 			textfield.setText("You wins");
                         gameStatus=1;
 			finish=true;
+                        frame.dispose();
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
 				buttons[i].setEnabled(false);
@@ -623,10 +625,9 @@ public void enableButtons() {
         
         public static void main(String[] args) {
        
-       SwingUtilities.invokeLater(TicTacToe3::createAndShowGUI);
+       //SwingUtilities.invokeLater(TicTacToe3::createAndShowGUI);
        // TicTacToe3 ttt = new TicTacToe3();
        
     }
         
 }
-
