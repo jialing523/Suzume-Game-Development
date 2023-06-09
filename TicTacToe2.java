@@ -455,8 +455,7 @@ public class TicTacToe2 implements ActionListener{
                     finish=true;
                     gameStatus=1;
                     JOptionPane.showMessageDialog(frame, "Congratulations: You manage to consider the potential consequences of your moves and anticipate your opponent's responses.", "Congratulations! You win!", JOptionPane.INFORMATION_MESSAGE);
-                    frame.dispose();
-            }
+            frame.dispose();}
             else if(j==-1) {
                     for(int i=0;i<9;i++) {
                             buttons[i].setEnabled(false);
@@ -467,12 +466,11 @@ public class TicTacToe2 implements ActionListener{
                     gameStatus=0;
                     if(x==0){
                     JOptionPane.showMessageDialog(frame, "Recommendation: Pay close attention to your opponent's moves and identify potential lines they might be trying to form. ","You lose! Better luck next time.",  JOptionPane.INFORMATION_MESSAGE);
-            }else if(x==1){
+            frame.dispose();}else if(x==1){
                  JOptionPane.showMessageDialog(frame, "Recommendation: Start by placing your shape in one of the corners. The corner has the least possible lines to be made.", "You lose! Better luck next time.", JOptionPane.INFORMATION_MESSAGE);
-            }else{
+            frame.dispose();}else{
                 JOptionPane.showMessageDialog(frame, "Recommendation: Set up situations where your opponent is forced to make a move that will inevitably lead to a line.  ","You lose! Better luck next time.",  JOptionPane.INFORMATION_MESSAGE);
-            }
-                    frame.dispose();
+            frame.dispose();}
             }else if(j==2) {
 
                     for(int i=0;i<9;i++) {
@@ -480,16 +478,9 @@ public class TicTacToe2 implements ActionListener{
                     }
                     undoButton.setEnabled(false); // Disable the "Undo" button
                     textfield.setText("The Game is Draw");
-                    finish=true;
-                    gameStatus=2;
-                    if(x==0){
-                    JOptionPane.showMessageDialog(frame, "Recommedation: Try to be more aggresive. Defence is not the only way to win in this game.","The game is a draw.",  JOptionPane.INFORMATION_MESSAGE);
-            }else if(x==1){
-                 JOptionPane.showMessageDialog(frame, "Recommendation: The more you play the game, the better you will become at recognizing patterns and developing winning strategies", "The game is a draw.", JOptionPane.INFORMATION_MESSAGE);
-            }else{
-                JOptionPane.showMessageDialog(frame, "Recommendation:  Be prepared to adjust your strategy based on the evolving game situation. As the board fills up, new opportunities and threats may arise. ","The game is a draw.",  JOptionPane.INFORMATION_MESSAGE);
-            }
-                    frame.dispose();
+                    displayGameDraw();
+                    finish=false;
+                    resetGame();
             }
     }
     
@@ -641,5 +632,38 @@ public class TicTacToe2 implements ActionListener{
                                     return 0;
                             }
                     }
+    private static void displayGameDraw() {
+        String text = "The game is a draw!\n\n" +
+            "Neither player has won, and all cells on the board are occupied. " +
+            "The game will restart until a winner is determined. Good luck!\n\n" +
+            "Please click the 'Close ' button to start over with a new game.";
+
+        JFrame frame = new JFrame("Game Draw");
+        frame.setSize(400, 300);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JTextArea textArea = new JTextArea(text);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        panel.add(textArea, BorderLayout.CENTER);
+
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose(); // Close the frame when the Close button is clicked
+            }
+        });
+        panel.add(closeButton, BorderLayout.SOUTH);
+
+        frame.setContentPane(panel);
+        frame.setLocationRelativeTo(null); // Center the frame on the screen
+        frame.setVisible(true);
+
+        
+    }
     
 }
