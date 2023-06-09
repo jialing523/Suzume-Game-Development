@@ -1,4 +1,3 @@
-package l.dsasg;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class ReversedTTT implements ActionListener{
+public class TicTacToe2 implements ActionListener{
     
 	Random random = new Random();
 	JFrame frame = new JFrame();
@@ -37,14 +36,15 @@ public class ReversedTTT implements ActionListener{
         Stack<Integer> stack = new Stack<>();
 
 	boolean player_turn;
-	boolean finish=false;
+	public boolean finish=false;
         boolean pve;
 	boolean move=true;
 	int depth;
+        public int gameStatus=-1;
         
-    ReversedTTT(){
+    TicTacToe2(){
     	//set up frame for choosing mode
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
 		frame.setLayout(new BorderLayout());
@@ -146,7 +146,7 @@ public class ReversedTTT implements ActionListener{
                 "A reverse game of TTT in a 3x3 square, but in reverse, players take turns placing shapes either a cross (X) or a nought (O), the loser is the first player to place 3 of their shape in either a horizontal, vertical, or diagonal row, automatically giving the other player the win.";
 
         JFrame frame = new JFrame("Game Introduction");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 300);
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -453,7 +453,9 @@ public class ReversedTTT implements ActionListener{
                     undoButton.setEnabled(false); // Disable the "Undo" button
                     textfield.setText("You wins");
                     finish=true;
+                    gameStatus=1;
                     JOptionPane.showMessageDialog(frame, "Congratulations: You manage to consider the potential consequences of your moves and anticipate your opponent's responses.", "Congratulations! You win!", JOptionPane.INFORMATION_MESSAGE);
+                    frame.dispose();
             }
             else if(j==-1) {
                     for(int i=0;i<9;i++) {
@@ -462,6 +464,7 @@ public class ReversedTTT implements ActionListener{
                     undoButton.setEnabled(false); // Disable the "Undo" button
                     textfield.setText("You lose");
                     finish=true;
+                    gameStatus=0;
                     if(x==0){
                     JOptionPane.showMessageDialog(frame, "Recommendation: Pay close attention to your opponent's moves and identify potential lines they might be trying to form. ","You lose! Better luck next time.",  JOptionPane.INFORMATION_MESSAGE);
             }else if(x==1){
@@ -469,6 +472,7 @@ public class ReversedTTT implements ActionListener{
             }else{
                 JOptionPane.showMessageDialog(frame, "Recommendation: Set up situations where your opponent is forced to make a move that will inevitably lead to a line.  ","You lose! Better luck next time.",  JOptionPane.INFORMATION_MESSAGE);
             }
+                    frame.dispose();
             }else if(j==2) {
 
                     for(int i=0;i<9;i++) {
@@ -477,6 +481,7 @@ public class ReversedTTT implements ActionListener{
                     undoButton.setEnabled(false); // Disable the "Undo" button
                     textfield.setText("The Game is Draw");
                     finish=true;
+                    gameStatus=2;
                     if(x==0){
                     JOptionPane.showMessageDialog(frame, "Recommedation: Try to be more aggresive. Defence is not the only way to win in this game.","The game is a draw.",  JOptionPane.INFORMATION_MESSAGE);
             }else if(x==1){
@@ -484,6 +489,7 @@ public class ReversedTTT implements ActionListener{
             }else{
                 JOptionPane.showMessageDialog(frame, "Recommendation:  Be prepared to adjust your strategy based on the evolving game situation. As the board fills up, new opportunities and threats may arise. ","The game is a draw.",  JOptionPane.INFORMATION_MESSAGE);
             }
+                    frame.dispose();
             }
     }
     
@@ -635,4 +641,5 @@ public class ReversedTTT implements ActionListener{
                                     return 0;
                             }
                     }
+    
 }
