@@ -1,3 +1,4 @@
+
 package Entity;
 
 import java.awt.Rectangle;
@@ -18,3 +19,4 @@ public class Entity
     public boolean collisionOn=false;
     public boolean reachStation=false;
 }
+
