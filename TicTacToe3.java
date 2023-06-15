@@ -16,7 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
 
-public class TicTacToe33 implements ActionListener{
+public class TicTacToe3 implements ActionListener{
 	Random random = new Random();
 	JFrame frame = new JFrame();
 	JPanel title_panel = new JPanel();
@@ -44,7 +44,7 @@ public class TicTacToe33 implements ActionListener{
         
 	   
         
-    TicTacToe33(){
+    TicTacToe3(){
     	//set up frame for choosing mode
               //  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
@@ -388,20 +388,26 @@ public void enableButtons() {
 				buttons[i].setEnabled(false);
 			}
 			textfield.setText("You lose");
+                        gameStatus=0;
 			finish=true;
+                        frame.dispose();
 		}
 		else if(j==-1) {
 			for(int i=0;i<25;i++) {
 				buttons[i].setEnabled(false);
 			}
 			textfield.setText("You wins");
+                        gameStatus=1;
 			finish=true;
+                        frame.dispose();
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
 				buttons[i].setEnabled(false);
 			}
 			textfield.setText("The Game is Draw");
+                        gameStatus=2;
 			finish=true;
+                        frame.dispose();
 		}          
            
 
@@ -624,9 +630,8 @@ public void enableButtons() {
         
         public static void main(String[] args) {
        
-           TicTacToe33 ttt3 = new TicTacToe33();
+           TicTacToe3 ttt3 = new TicTacToe3();
            
     }
         
 }
-
