@@ -391,7 +391,7 @@ public void enableButtons() {
 			textfield.setText("You lose");
                         gameStatus=0;
 			finish=true;
-                        frame.dispose();
+                        
 		}
 		else if(j==-1) {
 			for(int i=0;i<25;i++) {
@@ -400,7 +400,7 @@ public void enableButtons() {
 			textfield.setText("You wins");
                         gameStatus=1;
 			finish=true;
-                        frame.dispose();
+                        
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
 				buttons[i].setEnabled(false);
