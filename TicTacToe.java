@@ -167,9 +167,9 @@ public class TicTacToe implements ActionListener{
 			xWins((i+0),(i+5),(i+10));
 		} 
                   if(
-				(buttons[i+0].getText()=="X") &&
 				(buttons[i+5].getText()=="X") &&
-				(buttons[i+10].getText()=="X")
+				(buttons[i+10].getText()=="X") &&
+				(buttons[i+15].getText()=="X")
 				) {
 			xWins((i+5),(i+10),(i+15));
 		} 
@@ -265,9 +265,9 @@ public class TicTacToe implements ActionListener{
 			oWins((i+0),(i+5),(i+10));
 		} 
                   if(
-				(buttons[i+0].getText()=="O") &&
 				(buttons[i+5].getText()=="O") &&
-				(buttons[i+10].getText()=="O")
+				(buttons[i+10].getText()=="O") &&
+				(buttons[i+15].getText()=="O")
 				) {
 			oWins((i+5),(i+10),(i+15));
 		} 

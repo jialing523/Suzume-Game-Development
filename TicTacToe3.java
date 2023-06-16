@@ -104,6 +104,7 @@ public class TicTacToe3 implements ActionListener{
 				    public void actionPerformed(ActionEvent e) {
 				    	pve=false;
 				    	frame.remove(button_panel3);
+                                        frame.dispose();
 				    	TicTacToe ttt = new TicTacToe();
 				    }
 				}
