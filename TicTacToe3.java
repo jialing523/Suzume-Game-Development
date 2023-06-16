@@ -1,5 +1,4 @@
 package wia1002;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -106,6 +105,8 @@ public class TicTacToe3 implements ActionListener{
 				    	frame.remove(button_panel3);
                                         frame.dispose();
 				    	TicTacToe ttt = new TicTacToe();
+                                        gameStatus=ttt.gameSatus;
+                                        finish=ttt.finish;
 				    }
 				}
 			);
@@ -391,6 +392,7 @@ public void enableButtons() {
 			textfield.setText("You lose");
                         gameStatus=0;
 			finish=true;
+                        frame.dispose();
                         
 		}
 		else if(j==-1) {
@@ -400,6 +402,8 @@ public void enableButtons() {
 			textfield.setText("You wins");
                         gameStatus=1;
 			finish=true;
+                        frame.dispose();
+                        
                         
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
