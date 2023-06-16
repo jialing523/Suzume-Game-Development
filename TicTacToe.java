@@ -1,6 +1,5 @@
 
 package wia1002;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -21,6 +20,7 @@ public class TicTacToe implements ActionListener{
         
 	boolean player1_turn;
         boolean finish=false;
+        public int gameSatus=-1;
 
 	TicTacToe(){
 		//set up frame for choosing mode
@@ -338,6 +338,9 @@ public class TicTacToe implements ActionListener{
 			buttons[i].setEnabled(false);
 		}
 		textfield.setText("X wins");
+                this.gameSatus=0;
+                finish=true;
+                frame.dispose();
 	}
 	public void oWins(int a,int b,int c) {
 		buttons[a].setBackground(Color.GREEN);
@@ -348,6 +351,9 @@ public class TicTacToe implements ActionListener{
 			buttons[i].setEnabled(false);
 		}
 		textfield.setText("O wins");
+                this.gameSatus=1;
+                finish=true;
+                frame.dispose();
 	}
 
         
