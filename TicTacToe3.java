@@ -1,39 +1,32 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package wia1002;
 
-import java.awt.*;
+
+
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import java.util.Stack;
-
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class TicTacToe3 implements ActionListener{
         
-        //PVP 
-        Random random2 = new Random();
-	JFrame frame2 = new JFrame();
-	JPanel title_panel2 = new JPanel();
-	JPanel button_panel4 = new JPanel();
-        JPanel button_panel5 = new JPanel();
-	JLabel textfield2 = new JLabel();
-        String difficultyLevel;
-        
-        JButton[] modeButtons2 = new JButton[3];
-        JButton[] buttons2 = new JButton[25];
-        
-	boolean player1_turn2;
-        boolean finish2=false;
-        
-        //PVE
+     
+     
         Random random = new Random();
 	JFrame frame = new JFrame();
 	JPanel title_panel = new JPanel();
@@ -45,6 +38,7 @@ public class TicTacToe3 implements ActionListener{
         JPanel rpanel = new JPanel();
         JButton resButton = new JButton();
         JButton undoButton = new JButton();
+        
 
 	JButton[] modeButtons =new JButton[2];
 	JButton[] diffButtons =new JButton[3];
@@ -61,348 +55,28 @@ public class TicTacToe3 implements ActionListener{
        
         
 	   
-    
-    public void PVP(){
-		//set up frame for choosing mode
-		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame2.setSize(800,800);
-		frame2.getContentPane().setBackground(new Color(50,50,50));
-		frame2.setLayout(new BorderLayout());
-		frame2.setVisible(true);
-		
-                //set up textfield and title panel
-		textfield2.setBackground(new Color(25,25,25));
-		textfield2.setForeground(new Color(25,255,0));
-		textfield2.setFont(new Font("Ink Free",Font.BOLD,75));
-		textfield2.setHorizontalAlignment(JLabel.CENTER);
-		textfield2.setText("Tic-Tac-Toe");
-		textfield2.setOpaque(true);
-		
-		title_panel2.setLayout(new BorderLayout());
-		title_panel2.setBounds(0,0,800,100);
-		
-                //set up button panel and button for mode
-                button_panel4.setLayout(new GridLayout(3,1));
-                
-                
-		button_panel4.setLayout(new GridLayout(5,5));
-		button_panel4.setBackground(new Color(150,150,150));
-		
-		for(int i=0;i<25;i++) {
-			buttons2[i] = new JButton();
-			button_panel4.add(buttons2[i]);
-			buttons2[i].setFont(new Font("MV Boli",Font.BOLD,120));
-			buttons2[i].setFocusable(false);
-			buttons2[i].addActionListener(listener2);
-		}
-		
-		title_panel2.add(textfield2);
-		frame2.add(title_panel2,BorderLayout.NORTH);
-		frame2.add(button_panel4);
-		
-                chooseDifficultyLevel2();
-	
-	}
 
-        private void chooseDifficultyLevel2() {
-        String[] options = {"Easy", "Medium", "Hard"};
-        int choice = JOptionPane.showOptionDialog(this, "Choose difficulty level", "Difficulty Level",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);    
-    }
-        
-	ActionListener listener2 = new ActionListener(){
-	public void actionPerformed(ActionEvent e) {
-		
-		for(int i=0;i<25;i++) {
-			if(e.getSource()==buttons2[i]) {
-				if(player1_turn2) {
-					if(buttons2[i].getText()=="") {
-						buttons2[i].setForeground(new Color(255,0,0));
-						buttons2[i].setText("X");
-						player1_turn2=false;
-						textfield2.setText("O turn");
-						check2();
-					}
-				}
-				else {
-					if(buttons2[i].getText()=="") {
-						buttons2[i].setForeground(new Color(0,0,255));
-						buttons2[i].setText("O");
-						player1_turn2=true;
-						textfield2.setText("X turn");
-						check2();
-					}
-				}
-			}			
-		}
-	}
-        };
-	public void firstTurn2() {
-		
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		if(random2.nextInt(2)==0) {
-			player1_turn2=true;
-			textfield2.setText("X turn");
-		}
-		else {
-			player1_turn2=false;
-			textfield2.setText("O turn");
-		}
-	}
-	
-	public void check2() {
-		//check X win conditions
-                //Horizontal Check
-                for(int i=0;i<25;i+=5){
-		if(
-				(buttons2[i+0].getText()=="X") &&
-				(buttons2[i+1].getText()=="X") &&
-				(buttons2[i+2].getText()=="X")
-				) {
-			xWins((i+0),(i+1),(i+2));
-		}
-                if(
-				(buttons2[i+1].getText()=="X") &&
-				(buttons2[i+2].getText()=="X") &&
-				(buttons2[i+3].getText()=="X")
-				) {
-			xWins((i+1),(i+2),(i+3));
-		}
-		if(
-				(buttons2[i+2].getText()=="X") &&
-				(buttons2[i+3].getText()=="X") &&
-				(buttons2[i+4].getText()=="X")
-				) {
-			xWins((i+2),(i+3),(i+4));
-		}
-                }//Horizontal Check done
-                //Vertical Check
-                for(int i=0;i<5;i++){
-                  if(
-				(buttons2[i+0].getText()=="X") &&
-				(buttons2[i+5].getText()=="X") &&
-				(buttons2[i+10].getText()=="X")
-				) {
-			xWins((i+0),(i+5),(i+10));
-		} 
-                  if(
-				(buttons2[i+5].getText()=="X") &&
-				(buttons2[i+10].getText()=="X") &&
-				(buttons2[i+15].getText()=="X")
-				) {
-			xWins((i+5),(i+10),(i+15));
-		} 
-                  if(
-				(buttons2[i+10].getText()=="X") &&
-				(buttons2[i+15].getText()=="X") &&
-				(buttons2[i+20].getText()=="X")
-				) {
-			xWins((i+10),(i+15),(i+20));
-		}
-                }//Vertical Check done
-                //Diaognal Check Top Left to Bottom right
-                for(int i=0;i<15;i+=5){
-		if(
-				(buttons2[i+0].getText()=="X") &&
-				(buttons2[i+6].getText()=="X") &&
-				(buttons2[i+12].getText()=="X")
-				) {
-			xWins((i+0),(i+6),(i+12));
-		}
-                if(
-				(buttons2[i+1].getText()=="X") &&
-				(buttons2[i+7].getText()=="X") &&
-				(buttons2[i+13].getText()=="X")
-				) {
-			xWins((i+1),(i+7),(i+13));
-		}
-		if(
-				(buttons2[i+2].getText()=="X") &&
-				(buttons2[i+8].getText()=="X") &&
-				(buttons2[i+14].getText()=="X")
-				) {
-			xWins((i+2),(i+8),(i+14));
-		}
-                }//Diaognal Check Top left to Bottom right done
-                //Diaognal Check Top right to Bottom left 
-                for(int i=0;i<15;i+=5){
-		if(
-				(buttons2[i+2].getText()=="X") &&
-				(buttons2[i+6].getText()=="X") &&
-				(buttons2[i+10].getText()=="X")
-				) {
-			xWins((i+2),(i+6),(i+10));
-		}
-                if(
-				(buttons2[i+3].getText()=="X") &&
-				(buttons2[i+7].getText()=="X") &&
-				(buttons2[i+11].getText()=="X")
-				) {
-			xWins((i+3),(i+7),(i+11));
-		}
-		if(
-				(buttons2[i+4].getText()=="X") &&
-				(buttons2[i+8].getText()=="X") &&
-				(buttons2[i+12].getText()=="X")
-				) {
-			xWins((i+4),(i+8),(i+12));
-		}
-                }//Diaognal Check Top right to Bottom left done
-                
-		//check O win conditions
-                //Horizontal Check
-                for(int i=0;i<25;i+=5){
-		if(
-				(buttons2[i+0].getText()=="O") &&
-				(buttons2[i+1].getText()=="O") &&
-				(buttons2[i+2].getText()=="O")
-				) {
-			oWins((i+0),(i+1),(i+2));
-		}
-                if(
-				(buttons2[i+1].getText()=="O") &&
-				(buttons2[i+2].getText()=="O") &&
-				(buttons2[i+3].getText()=="O")
-				) {
-			oWins((i+1),(i+2),(i+3));
-		}
-		if(
-				(buttons2[i+2].getText()=="O") &&
-				(buttons2[i+3].getText()=="O") &&
-				(buttons2[i+4].getText()=="O")
-				) {
-			oWins((i+2),(i+3),(i+4));
-		}
-                }//Horizontal Check done
-                //Vertical Check
-                for(int i=0;i<5;i++){
-                  if(
-				(buttons2[i+0].getText()=="O") &&
-				(buttons2[i+5].getText()=="O") &&
-				(buttons2[i+10].getText()=="O")
-				) {
-			oWins((i+0),(i+5),(i+10));
-		} 
-                  if(
-				(buttons2[i+5].getText()=="O") &&
-				(buttons2[i+10].getText()=="O") &&
-				(buttons2[i+15].getText()=="O")
-				) {
-			oWins((i+5),(i+10),(i+15));
-		} 
-                  if(
-				(buttons2[i+10].getText()=="O") &&
-				(buttons2[i+15].getText()=="O") &&
-				(buttons2[i+20].getText()=="O")
-				) {
-			oWins((i+10),(i+15),(i+20));
-		}
-                }//Vertical Check done
-                //Diaognal Check Top Left to Bottom right
-                for(int i=0;i<15;i+=5){
-		if(
-				(buttons2[i+0].getText()=="O") &&
-				(buttons2[i+6].getText()=="O") &&
-				(buttons2[i+12].getText()=="O")
-				) {
-			oWins((i+0),(i+6),(i+12));
-		}
-                if(
-				(buttons2[i+1].getText()=="O") &&
-				(buttons2[i+7].getText()=="O") &&
-				(buttons2[i+13].getText()=="O")
-				) {
-			xWins((i+1),(i+7),(i+13));
-		}
-		if(
-				(buttons2[i+2].getText()=="O") &&
-				(buttons2[i+8].getText()=="O") &&
-				(buttons2[i+14].getText()=="O")
-				) {
-			oWins((i+2),(i+8),(i+14));
-		}
-                }//Diaognal Check Top left to Bottom right done
-                //Diaognal Check Top right to Bottom left 
-                for(int i=0;i<15;i+=5){
-		if(
-				(buttons2[i+2].getText()=="O") &&
-				(buttons2[i+6].getText()=="O") &&
-				(buttons2[i+10].getText()=="O")
-				) {
-			oWins((i+2),(i+6),(i+10));
-		}
-                if(
-				(buttons2[i+3].getText()=="O") &&
-				(buttons2[i+7].getText()=="O") &&
-				(buttons2[i+11].getText()=="O")
-				) {
-			oWins((i+3),(i+7),(i+11));
-		}
-		if(
-				(buttons2[i+4].getText()=="O") &&
-				(buttons2[i+8].getText()=="O") &&
-				(buttons2[i+12].getText()=="O")
-				) {
-			oWins((i+4),(i+8),(i+12));
-		}
-                }//Diaognal Check Top right to Bottom left done
-	}
-	
-	public void xWins(int a,int b,int c) {
-		buttons2[a].setBackground(Color.GREEN);
-		buttons2[b].setBackground(Color.GREEN);
-		buttons2[c].setBackground(Color.GREEN);
-		
-		for(int i=0;i<25;i++) {
-			buttons2[i].setEnabled(false);
-		}
-		textfield2.setText("X wins");
-	}
-	public void oWins(int a,int b,int c) {
-		buttons2[a].setBackground(Color.GREEN);
-		buttons2[b].setBackground(Color.GREEN);
-		buttons2[c].setBackground(Color.GREEN);
-		
-		for(int i=0;i<25;i++) {
-			buttons2[i].setEnabled(false);
-		}
-		textfield2.setText("O wins");
-	}
-    
-        
-        
-    
-    public void PVE(){
+    TicTacToe3(){
     	//set up frame for choosing mode
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
 		frame.setLayout(new BorderLayout());
 		frame.setVisible(true);
-                frame.setLocationRelativeTo(null);
+         
 		
 		//set up textfield and title panel
 		textfield.setBackground(new Color(25,25,25));
 		textfield.setForeground(new Color(25,255,0));
 		textfield.setFont(new Font("Ink Free",Font.BOLD,75));
 		textfield.setHorizontalAlignment(JLabel.CENTER);
-		textfield.setText("Tic-Tac-Toe 5X5");
+		textfield.setText("5x5 Tic-Tac-Toe");
 		textfield.setOpaque(true);
 		
 		title_panel.setLayout(new BorderLayout());
 		title_panel.setBounds(0,0,800,100);
                 
-                /* For the reset Button */
-                rpanel.setLayout(new BorderLayout());
-                resButton.setText("Reset");
-                resButton.setSize(100, 50);
-                resButton.addActionListener(this);
+               
                 
                 displayGameIntroduction();
                 // set up button panel and button for mode
@@ -417,13 +91,23 @@ public class TicTacToe3 implements ActionListener{
 		modeButtons[0].setText("PvE");
 		modeButtons[1].setText("PvP");
                 
+                 /* For the reset Button */
+                rpanel.setLayout(new BorderLayout());
+                resButton.setText("Reset");
+                
+                resButton.setSize(100, 50);
+                resButton.addActionListener(this);
+                
                 // complete the frame
 		textfield.setText("Tic-Tac-Toe 5x5");
 		title_panel.add(textfield);
                 rpanel.add(resButton);
 		frame.add(title_panel,BorderLayout.NORTH);
-		frame.add(button_panel3);
+		frame.add(button_panel,BorderLayout.CENTER);
                 frame.add(rpanel, BorderLayout.SOUTH);
+                frame.setLocationRelativeTo(null);
+                
+                frame.add(button_panel3);
                 
                 modeButtons[0].addActionListener(
 				new ActionListener() {
@@ -438,8 +122,8 @@ public class TicTacToe3 implements ActionListener{
 				    public void actionPerformed(ActionEvent e) {
 				    	pve=false;
 				    	frame.remove(button_panel3);
-                                        frame.dispose();
-				    	PVP();
+                                        gameScreen();
+				    	firstTurn();
 				    }
 				}
 			);
@@ -500,7 +184,7 @@ private static void displayGameIntroduction() {
 		   buttons[i].setFocusable(false);
 		   buttons[i].addActionListener(this);
 	  }
-	  
+	  textfield.setText("5x5 Tic-Tac-Toe");
 	  
 	  frame.add(button_panel2);
 	  
@@ -557,9 +241,14 @@ private static void displayGameIntroduction() {
                                             }
                                         }
                                 );
-                       
-		
-		
+                                     //   disableButtons();
+                        try {
+                                Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                        }
+                      //  enableButtons();                       		
  }
  
 
@@ -567,7 +256,7 @@ private static void displayGameIntroduction() {
    
      if (e.getSource() == resButton) {
         resetGame();
-     } else {
+     } else if (player_turn&&pve==true) {
         for (int i = 0; i < 25; i++) {
             if (e.getSource() == buttons[i]) {
                 if (buttons[i].getText().equals("")) {
@@ -586,20 +275,53 @@ private static void displayGameIntroduction() {
             }
         }
     }
+    else {	
+            for(int i=0;i<25;i++) {
+                    if(e.getSource()==buttons[i]) {
+                            if(player_turn) {
+                                    if(buttons[i].getText()=="") {
+                                            buttons[i].setForeground(new Color(255,0,0));
+                                            buttons[i].setText("X");
+                                            player_turn=false;
+                                            stack.push(i);
+                                            textfield.setText("O turn");
+                                            win2(checkWin());
+                                    }
+                            }
+                            else {
+                                    if(buttons[i].getText()=="") {
+                                            buttons[i].setForeground(new Color(0,0,255));
+                                            buttons[i].setText("O");
+                                            player_turn=true;
+                                            stack.push(i);
+                                            textfield.setText("X turn");
+                                            win2(checkWin());
+                                    }
+                            }
+                    }			
+            }
+    }
+     
+     
      
  }
   
  
   public void firstTurn() {
-		
-
-        if(random.nextInt(2)==0) {
+	 int x=random.nextInt(2);
+		if(x==0&&pve==true) {
 			player_turn=true;
 			textfield.setText("Your turn");
 		}
-		else {
+		else if(x==1&&pve==true){
 			player_turn=false;
-			textfield.setText("PC turn");
+                        AiTurn(depth);
+		}else if(x==0&&pve==false){
+			player_turn=false;
+			textfield.setText("O turn");
+		}else if(x==1&&pve==false){
+			player_turn=true;
+			textfield.setText("X turn");
 		}
 	}
   
@@ -676,48 +398,39 @@ private static void displayGameIntroduction() {
         return bestscore ;
 }
 } 
-public void disableButtons() {
-    for (int i = 0; i < 3; i++) {
-        modeButtons[i].setEnabled(false);
+//public void disableButtons() {
+//    for (int i = 0; i < 3; i++) {
+//        modeButtons[i].setEnabled(false);
+//    }
+//}
+//
+//public void enableButtons() {
+//    for (int i = 0; i < 3; i++) {
+//        modeButtons[i].setEnabled(true);
+//    }
+//}
+
+
+ public void resetGame() {
+        frame.remove(button_panel2);
+        button_panel2 = new JPanel();
+        button_panel2.setLayout(new GridLayout(5, 5));
+
+        for (int i = 0; i < 25; i++) {
+            buttons[i] = new JButton();
+            button_panel2.add(buttons[i]);
+            buttons[i].setFont(new Font("MV Boli", Font.BOLD, 120));
+            buttons[i].setFocusable(false);
+            buttons[i].addActionListener(this);
+        }
+        firstTurn();
+        finish = false;
+        undoButton.setEnabled(true); // Disable the "Undo" button
+        
+        frame.add(button_panel2);
+        frame.revalidate();
+        frame.repaint();
     }
-}
-
-public void enableButtons() {
-    for (int i = 0; i < 3; i++) {
-        modeButtons[i].setEnabled(true);
-    }
-}
-
-
-  public void resetGame() {
-    frame.remove(button_panel2);
-    button_panel2 = new JPanel();
-    button_panel2.setLayout(new GridLayout(5, 5));
-
-    for (int i = 0; i < 25; i++) {
-        buttons[i] = new JButton();
-        button_panel2.add(buttons[i]);
-        buttons[i].setFont(new Font("MV Boli", Font.BOLD, 120));
-        buttons[i].setFocusable(false);
-        buttons[i].addActionListener(this);
-    }
-
-     player_turn = random.nextInt(2) == 0;
-     if (player_turn) {
-        textfield.setText("Your turn");
-        title_panel.add(textfield);
-    } else {
-        textfield.setText("PC turn");
-        title_panel.add(textfield);
-        AiTurn(depth);
-    }
-    finish = false;
-    undoButton.setEnabled(true); // Disable the "Undo" button
-
-    frame.add(button_panel2);
-    frame.revalidate();
-    frame.repaint();
-}
 
 
 	public void win(int j) {
@@ -750,6 +463,36 @@ public void enableButtons() {
            
 
         }
+        public void win2(int j) {
+             if(j==1) {
+			for(int i=0;i<25;i++) {
+				buttons[i].setEnabled(false);
+			}
+			textfield.setText("X wins");
+                        gameStatus=0;
+			finish=true;
+                        
+		}
+		else if(j==-1) {
+			for(int i=0;i<25;i++) {
+				buttons[i].setEnabled(false);
+			}
+			textfield.setText("O wins");
+                        gameStatus=1;
+			finish=true;
+                        
+		}else if(j==2) {
+			for(int i=0;i<25;i++) {
+				buttons[i].setEnabled(false);
+			}
+			textfield.setText("The Game is Draw");
+                        gameStatus=2;
+			finish=true;
+                        frame.dispose();
+		}          
+           
+
+        }
 
 
         
@@ -762,7 +505,7 @@ public void enableButtons() {
 				(buttons[i+1].getText()=="X") &&
 				(buttons[i+2].getText()=="X")
 				) {
-                        xWins1((i+0),(i+1),(i+2));
+                        
 			return 1;
 		}
                 if(
@@ -770,7 +513,7 @@ public void enableButtons() {
 				(buttons[i+2].getText()=="X") &&
 				(buttons[i+3].getText()=="X")
 				) {
-			xWins1((i+1),(i+2),(i+3));
+			
                         return 1;
 		}
 		if(
@@ -778,7 +521,7 @@ public void enableButtons() {
 				(buttons[i+3].getText()=="X") &&
 				(buttons[i+4].getText()=="X")
 				) {
-			xWins1((i+2),(i+3),(i+4));
+			
                         return 1;
 		}
                 }//Horizontal Check done
@@ -789,7 +532,7 @@ public void enableButtons() {
 				(buttons[i+5].getText()=="X") &&
 				(buttons[i+10].getText()=="X")
 				) {
-                        xWins((i+0),(i+5),(i+10));
+             
 			return 1;
 		} 
                   if(
@@ -797,7 +540,7 @@ public void enableButtons() {
 				(buttons[i+10].getText()=="X") &&
 				(buttons[i+15].getText()=="X")
 				) {
-                        xWins((i+5),(i+10),(i+15));
+                       
 			return 1;
 		} 
                   if(
@@ -805,7 +548,7 @@ public void enableButtons() {
 				(buttons[i+15].getText()=="X") &&
 				(buttons[i+20].getText()=="X")
 				) {
-			xWins1((i+10),(i+15),(i+20));
+		
                         return 1;
 		}
                 }//Vertical Check done
@@ -816,7 +559,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="X") &&
 				(buttons[i+12].getText()=="X")
 				) {
-                        xWins1((i+0),(i+6),(i+12));
+
 			return 1;
 		}
                 if(
@@ -824,7 +567,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="X") &&
 				(buttons[i+13].getText()=="X")
 				) {
-			xWins1((i+1),(i+7),(i+13));
+			
                         return 1;
 		}
 		if(
@@ -832,7 +575,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="X") &&
 				(buttons[i+14].getText()=="X")
 				) {
-                        xWins1((i+2),(i+8),(i+14));
+                    
 			return 1;
 		}
                 }//Diaognal Check Top left to Bottom right done
@@ -843,7 +586,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="X") &&
 				(buttons[i+10].getText()=="X")
 				) {
-                        xWins1((i+2),(i+6),(i+10));
+                   
 			return 1;
 		}
                 if(
@@ -851,7 +594,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="X") &&
 				(buttons[i+11].getText()=="X")
 				) {
-                        xWins1((i+3),(i+7),(i+11));
+                  
 			return 1;
 		}
 		if(
@@ -859,7 +602,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="X") &&
 				(buttons[i+12].getText()=="X")
 				) {
-                        xWins1((i+4),(i+8),(i+12));
+           
 			return 1;
 		}
                 }//Diaognal Check Top right to Bottom left done
@@ -872,7 +615,7 @@ public void enableButtons() {
 				(buttons[i+1].getText()=="O") &&
 				(buttons[i+2].getText()=="O")
 				) {
-                        oWins1((i+0),(i+1),(i+2));
+                
 			return -1;
 		}
                 if(
@@ -880,7 +623,7 @@ public void enableButtons() {
 				(buttons[i+2].getText()=="O") &&
 				(buttons[i+3].getText()=="O")
 				) {
-                        oWins1((i+1),(i+2),(i+3));
+                    
 			return -1;
 		}
 		if(
@@ -888,7 +631,7 @@ public void enableButtons() {
 				(buttons[i+3].getText()=="O") &&
 				(buttons[i+4].getText()=="O")
 				) {
-                        oWins1((i+2),(i+3),(i+4));
+                    
 			return -1;
 		}
                 }//Horizontal Check done
@@ -899,7 +642,7 @@ public void enableButtons() {
 				(buttons[i+5].getText()=="O") &&
 				(buttons[i+10].getText()=="O")
 				) {
-                        oWins1((i+0),(i+5),(i+10));
+                     
 			return -1;
 		} 
                   if(
@@ -907,7 +650,7 @@ public void enableButtons() {
 				(buttons[i+10].getText()=="O") &&
 				(buttons[i+15].getText()=="O")
 				) {
-                        oWins1((i+5),(i+10),(i+15));
+                    
 			return -1;
 		} 
                   if(
@@ -915,7 +658,7 @@ public void enableButtons() {
 				(buttons[i+15].getText()=="O") &&
 				(buttons[i+20].getText()=="O")
 				) {
-                        oWins1((i+10),(i+15),(i+20));
+                     
 			return -1;
 		}
                 }//Vertical Check done
@@ -926,7 +669,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="O") &&
 				(buttons[i+12].getText()=="O")
 				) {
-                        oWins1((i+0),(i+6),(i+12));
+                    
 			return -1;
 		}
                 if(
@@ -934,7 +677,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="O") &&
 				(buttons[i+13].getText()=="O")
 				) {
-                        oWins1((i+1),(i+7),(i+13));
+                      
 			return -1;
 		}
 		if(
@@ -942,7 +685,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="O") &&
 				(buttons[i+14].getText()=="O")
 				) {
-                        oWins1((i+2),(i+8),(i+14));
+                      
 			return -1;
 		}
                 }//Diaognal Check Top left to Bottom right done
@@ -953,7 +696,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="O") &&
 				(buttons[i+10].getText()=="O")
 				) {
-                        oWins1((i+2),(i+6),(i+10));
+               
 			return -1;
 		}
                 if(
@@ -961,7 +704,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="O") &&
 				(buttons[i+11].getText()=="O")
 				) {
-                        oWins1((i+3),(i+7),(i+11));
+                     
 			return -1;
 		}
 		if(
@@ -969,7 +712,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="O") &&
 				(buttons[i+12].getText()=="O")
 				) {
-                        oWins1((i+4),(i+8),(i+12));
+                        
 			return -1;
 		}
                 }//Diaognal Check Top right to Bottom left done
@@ -990,29 +733,19 @@ public void enableButtons() {
 		}
 }
         
- public void xWins1(int a,int b,int c) {
-		buttons[a].setBackground(Color.GREEN);
-		buttons[b].setBackground(Color.GREEN);
-		buttons[c].setBackground(Color.GREEN);
-		
-		
-	}
-	public void oWins1(int a,int b,int c) {
-		buttons[a].setBackground(Color.GREEN);
-		buttons[b].setBackground(Color.GREEN);
-		buttons[c].setBackground(Color.GREEN);
-		
-		
-	}       
+
         
+     
         
+
         
         
         public static void main(String[] args) {
        
            TicTacToe3 ttt3 = new TicTacToe3();
-           ttt3.PVE();
+         
            
     }
         
 }
+
