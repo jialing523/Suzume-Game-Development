@@ -1,4 +1,5 @@
 package wia1002;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +17,24 @@ import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
 
 public class TicTacToe3 implements ActionListener{
-	Random random = new Random();
+        
+        //PVP 
+        Random random2 = new Random();
+	JFrame frame2 = new JFrame();
+	JPanel title_panel2 = new JPanel();
+	JPanel button_panel4 = new JPanel();
+        JPanel button_panel5 = new JPanel();
+	JLabel textfield2 = new JLabel();
+        String difficultyLevel;
+        
+        JButton[] modeButtons2 = new JButton[3];
+        JButton[] buttons2 = new JButton[25];
+        
+	boolean player1_turn2;
+        boolean finish2=false;
+        
+        //PVE
+        Random random = new Random();
 	JFrame frame = new JFrame();
 	JPanel title_panel = new JPanel();
 	JPanel button_panel = new JPanel();
@@ -40,12 +58,329 @@ public class TicTacToe3 implements ActionListener{
 	boolean move=true;
         int depth;   
 	public int gameStatus=-1;
+       
         
 	   
+    
+    public void PVP(){
+		//set up frame for choosing mode
+		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame2.setSize(800,800);
+		frame2.getContentPane().setBackground(new Color(50,50,50));
+		frame2.setLayout(new BorderLayout());
+		frame2.setVisible(true);
+		
+                //set up textfield and title panel
+		textfield2.setBackground(new Color(25,25,25));
+		textfield2.setForeground(new Color(25,255,0));
+		textfield2.setFont(new Font("Ink Free",Font.BOLD,75));
+		textfield2.setHorizontalAlignment(JLabel.CENTER);
+		textfield2.setText("Tic-Tac-Toe");
+		textfield2.setOpaque(true);
+		
+		title_panel2.setLayout(new BorderLayout());
+		title_panel2.setBounds(0,0,800,100);
+		
+                //set up button panel and button for mode
+                button_panel4.setLayout(new GridLayout(3,1));
+                
+                
+		button_panel4.setLayout(new GridLayout(5,5));
+		button_panel4.setBackground(new Color(150,150,150));
+		
+		for(int i=0;i<25;i++) {
+			buttons2[i] = new JButton();
+			button_panel4.add(buttons2[i]);
+			buttons2[i].setFont(new Font("MV Boli",Font.BOLD,120));
+			buttons2[i].setFocusable(false);
+			buttons2[i].addActionListener(listener2);
+		}
+		
+		title_panel2.add(textfield2);
+		frame2.add(title_panel2,BorderLayout.NORTH);
+		frame2.add(button_panel4);
+		
+                chooseDifficultyLevel2();
+	
+	}
+
+        private void chooseDifficultyLevel2() {
+        String[] options = {"Easy", "Medium", "Hard"};
+        int choice = JOptionPane.showOptionDialog(this, "Choose difficulty level", "Difficulty Level",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);    
+    }
         
-    TicTacToe3(){
+	ActionListener listener2 = new ActionListener(){
+	public void actionPerformed(ActionEvent e) {
+		
+		for(int i=0;i<25;i++) {
+			if(e.getSource()==buttons2[i]) {
+				if(player1_turn2) {
+					if(buttons2[i].getText()=="") {
+						buttons2[i].setForeground(new Color(255,0,0));
+						buttons2[i].setText("X");
+						player1_turn2=false;
+						textfield2.setText("O turn");
+						check2();
+					}
+				}
+				else {
+					if(buttons2[i].getText()=="") {
+						buttons2[i].setForeground(new Color(0,0,255));
+						buttons2[i].setText("O");
+						player1_turn2=true;
+						textfield2.setText("X turn");
+						check2();
+					}
+				}
+			}			
+		}
+	}
+        };
+	public void firstTurn2() {
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(random2.nextInt(2)==0) {
+			player1_turn2=true;
+			textfield2.setText("X turn");
+		}
+		else {
+			player1_turn2=false;
+			textfield2.setText("O turn");
+		}
+	}
+	
+	public void check2() {
+		//check X win conditions
+                //Horizontal Check
+                for(int i=0;i<25;i+=5){
+		if(
+				(buttons2[i+0].getText()=="X") &&
+				(buttons2[i+1].getText()=="X") &&
+				(buttons2[i+2].getText()=="X")
+				) {
+			xWins((i+0),(i+1),(i+2));
+		}
+                if(
+				(buttons2[i+1].getText()=="X") &&
+				(buttons2[i+2].getText()=="X") &&
+				(buttons2[i+3].getText()=="X")
+				) {
+			xWins((i+1),(i+2),(i+3));
+		}
+		if(
+				(buttons2[i+2].getText()=="X") &&
+				(buttons2[i+3].getText()=="X") &&
+				(buttons2[i+4].getText()=="X")
+				) {
+			xWins((i+2),(i+3),(i+4));
+		}
+                }//Horizontal Check done
+                //Vertical Check
+                for(int i=0;i<5;i++){
+                  if(
+				(buttons2[i+0].getText()=="X") &&
+				(buttons2[i+5].getText()=="X") &&
+				(buttons2[i+10].getText()=="X")
+				) {
+			xWins((i+0),(i+5),(i+10));
+		} 
+                  if(
+				(buttons2[i+5].getText()=="X") &&
+				(buttons2[i+10].getText()=="X") &&
+				(buttons2[i+15].getText()=="X")
+				) {
+			xWins((i+5),(i+10),(i+15));
+		} 
+                  if(
+				(buttons2[i+10].getText()=="X") &&
+				(buttons2[i+15].getText()=="X") &&
+				(buttons2[i+20].getText()=="X")
+				) {
+			xWins((i+10),(i+15),(i+20));
+		}
+                }//Vertical Check done
+                //Diaognal Check Top Left to Bottom right
+                for(int i=0;i<15;i+=5){
+		if(
+				(buttons2[i+0].getText()=="X") &&
+				(buttons2[i+6].getText()=="X") &&
+				(buttons2[i+12].getText()=="X")
+				) {
+			xWins((i+0),(i+6),(i+12));
+		}
+                if(
+				(buttons2[i+1].getText()=="X") &&
+				(buttons2[i+7].getText()=="X") &&
+				(buttons2[i+13].getText()=="X")
+				) {
+			xWins((i+1),(i+7),(i+13));
+		}
+		if(
+				(buttons2[i+2].getText()=="X") &&
+				(buttons2[i+8].getText()=="X") &&
+				(buttons2[i+14].getText()=="X")
+				) {
+			xWins((i+2),(i+8),(i+14));
+		}
+                }//Diaognal Check Top left to Bottom right done
+                //Diaognal Check Top right to Bottom left 
+                for(int i=0;i<15;i+=5){
+		if(
+				(buttons2[i+2].getText()=="X") &&
+				(buttons2[i+6].getText()=="X") &&
+				(buttons2[i+10].getText()=="X")
+				) {
+			xWins((i+2),(i+6),(i+10));
+		}
+                if(
+				(buttons2[i+3].getText()=="X") &&
+				(buttons2[i+7].getText()=="X") &&
+				(buttons2[i+11].getText()=="X")
+				) {
+			xWins((i+3),(i+7),(i+11));
+		}
+		if(
+				(buttons2[i+4].getText()=="X") &&
+				(buttons2[i+8].getText()=="X") &&
+				(buttons2[i+12].getText()=="X")
+				) {
+			xWins((i+4),(i+8),(i+12));
+		}
+                }//Diaognal Check Top right to Bottom left done
+                
+		//check O win conditions
+                //Horizontal Check
+                for(int i=0;i<25;i+=5){
+		if(
+				(buttons2[i+0].getText()=="O") &&
+				(buttons2[i+1].getText()=="O") &&
+				(buttons2[i+2].getText()=="O")
+				) {
+			oWins((i+0),(i+1),(i+2));
+		}
+                if(
+				(buttons2[i+1].getText()=="O") &&
+				(buttons2[i+2].getText()=="O") &&
+				(buttons2[i+3].getText()=="O")
+				) {
+			oWins((i+1),(i+2),(i+3));
+		}
+		if(
+				(buttons2[i+2].getText()=="O") &&
+				(buttons2[i+3].getText()=="O") &&
+				(buttons2[i+4].getText()=="O")
+				) {
+			oWins((i+2),(i+3),(i+4));
+		}
+                }//Horizontal Check done
+                //Vertical Check
+                for(int i=0;i<5;i++){
+                  if(
+				(buttons2[i+0].getText()=="O") &&
+				(buttons2[i+5].getText()=="O") &&
+				(buttons2[i+10].getText()=="O")
+				) {
+			oWins((i+0),(i+5),(i+10));
+		} 
+                  if(
+				(buttons2[i+5].getText()=="O") &&
+				(buttons2[i+10].getText()=="O") &&
+				(buttons2[i+15].getText()=="O")
+				) {
+			oWins((i+5),(i+10),(i+15));
+		} 
+                  if(
+				(buttons2[i+10].getText()=="O") &&
+				(buttons2[i+15].getText()=="O") &&
+				(buttons2[i+20].getText()=="O")
+				) {
+			oWins((i+10),(i+15),(i+20));
+		}
+                }//Vertical Check done
+                //Diaognal Check Top Left to Bottom right
+                for(int i=0;i<15;i+=5){
+		if(
+				(buttons2[i+0].getText()=="O") &&
+				(buttons2[i+6].getText()=="O") &&
+				(buttons2[i+12].getText()=="O")
+				) {
+			oWins((i+0),(i+6),(i+12));
+		}
+                if(
+				(buttons2[i+1].getText()=="O") &&
+				(buttons2[i+7].getText()=="O") &&
+				(buttons2[i+13].getText()=="O")
+				) {
+			xWins((i+1),(i+7),(i+13));
+		}
+		if(
+				(buttons2[i+2].getText()=="O") &&
+				(buttons2[i+8].getText()=="O") &&
+				(buttons2[i+14].getText()=="O")
+				) {
+			oWins((i+2),(i+8),(i+14));
+		}
+                }//Diaognal Check Top left to Bottom right done
+                //Diaognal Check Top right to Bottom left 
+                for(int i=0;i<15;i+=5){
+		if(
+				(buttons2[i+2].getText()=="O") &&
+				(buttons2[i+6].getText()=="O") &&
+				(buttons2[i+10].getText()=="O")
+				) {
+			oWins((i+2),(i+6),(i+10));
+		}
+                if(
+				(buttons2[i+3].getText()=="O") &&
+				(buttons2[i+7].getText()=="O") &&
+				(buttons2[i+11].getText()=="O")
+				) {
+			oWins((i+3),(i+7),(i+11));
+		}
+		if(
+				(buttons2[i+4].getText()=="O") &&
+				(buttons2[i+8].getText()=="O") &&
+				(buttons2[i+12].getText()=="O")
+				) {
+			oWins((i+4),(i+8),(i+12));
+		}
+                }//Diaognal Check Top right to Bottom left done
+	}
+	
+	public void xWins(int a,int b,int c) {
+		buttons2[a].setBackground(Color.GREEN);
+		buttons2[b].setBackground(Color.GREEN);
+		buttons2[c].setBackground(Color.GREEN);
+		
+		for(int i=0;i<25;i++) {
+			buttons2[i].setEnabled(false);
+		}
+		textfield2.setText("X wins");
+	}
+	public void oWins(int a,int b,int c) {
+		buttons2[a].setBackground(Color.GREEN);
+		buttons2[b].setBackground(Color.GREEN);
+		buttons2[c].setBackground(Color.GREEN);
+		
+		for(int i=0;i<25;i++) {
+			buttons2[i].setEnabled(false);
+		}
+		textfield2.setText("O wins");
+	}
+    
+        
+        
+    
+    public void PVE(){
     	//set up frame for choosing mode
-              //  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800,800);
 		frame.getContentPane().setBackground(new Color(50,50,50));
 		frame.setLayout(new BorderLayout());
@@ -104,9 +439,7 @@ public class TicTacToe3 implements ActionListener{
 				    	pve=false;
 				    	frame.remove(button_panel3);
                                         frame.dispose();
-				    	TicTacToe ttt = new TicTacToe();
-                                        gameStatus=ttt.gameSatus;
-                                        finish=ttt.finish;
+				    	PVP();
 				    }
 				}
 			);
@@ -228,6 +561,8 @@ private static void displayGameIntroduction() {
 		
 		
  }
+ 
+
  public void actionPerformed(ActionEvent e) {
    
      if (e.getSource() == resButton) {
@@ -253,6 +588,7 @@ private static void displayGameIntroduction() {
     }
      
  }
+  
  
   public void firstTurn() {
 		
@@ -392,7 +728,6 @@ public void enableButtons() {
 			textfield.setText("You lose");
                         gameStatus=0;
 			finish=true;
-                        frame.dispose();
                         
 		}
 		else if(j==-1) {
@@ -402,8 +737,6 @@ public void enableButtons() {
 			textfield.setText("You wins");
                         gameStatus=1;
 			finish=true;
-                        frame.dispose();
-                        
                         
 		}else if(j==2) {
 			for(int i=0;i<25;i++) {
@@ -429,6 +762,7 @@ public void enableButtons() {
 				(buttons[i+1].getText()=="X") &&
 				(buttons[i+2].getText()=="X")
 				) {
+                        xWins1((i+0),(i+1),(i+2));
 			return 1;
 		}
                 if(
@@ -436,14 +770,16 @@ public void enableButtons() {
 				(buttons[i+2].getText()=="X") &&
 				(buttons[i+3].getText()=="X")
 				) {
-			return 1;
+			xWins1((i+1),(i+2),(i+3));
+                        return 1;
 		}
 		if(
 				(buttons[i+2].getText()=="X") &&
 				(buttons[i+3].getText()=="X") &&
 				(buttons[i+4].getText()=="X")
 				) {
-			return 1;
+			xWins1((i+2),(i+3),(i+4));
+                        return 1;
 		}
                 }//Horizontal Check done
                 //Vertical Check
@@ -453,13 +789,15 @@ public void enableButtons() {
 				(buttons[i+5].getText()=="X") &&
 				(buttons[i+10].getText()=="X")
 				) {
+                        xWins((i+0),(i+5),(i+10));
 			return 1;
 		} 
                   if(
-				(buttons[i+0].getText()=="X") &&
 				(buttons[i+5].getText()=="X") &&
-				(buttons[i+10].getText()=="X")
+				(buttons[i+10].getText()=="X") &&
+				(buttons[i+15].getText()=="X")
 				) {
+                        xWins((i+5),(i+10),(i+15));
 			return 1;
 		} 
                   if(
@@ -467,7 +805,8 @@ public void enableButtons() {
 				(buttons[i+15].getText()=="X") &&
 				(buttons[i+20].getText()=="X")
 				) {
-			return 1;
+			xWins1((i+10),(i+15),(i+20));
+                        return 1;
 		}
                 }//Vertical Check done
                 //Diaognal Check Top Left to Bottom right
@@ -477,6 +816,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="X") &&
 				(buttons[i+12].getText()=="X")
 				) {
+                        xWins1((i+0),(i+6),(i+12));
 			return 1;
 		}
                 if(
@@ -484,13 +824,15 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="X") &&
 				(buttons[i+13].getText()=="X")
 				) {
-			return 1;
+			xWins1((i+1),(i+7),(i+13));
+                        return 1;
 		}
 		if(
 				(buttons[i+2].getText()=="X") &&
 				(buttons[i+8].getText()=="X") &&
 				(buttons[i+14].getText()=="X")
 				) {
+                        xWins1((i+2),(i+8),(i+14));
 			return 1;
 		}
                 }//Diaognal Check Top left to Bottom right done
@@ -501,6 +843,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="X") &&
 				(buttons[i+10].getText()=="X")
 				) {
+                        xWins1((i+2),(i+6),(i+10));
 			return 1;
 		}
                 if(
@@ -508,6 +851,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="X") &&
 				(buttons[i+11].getText()=="X")
 				) {
+                        xWins1((i+3),(i+7),(i+11));
 			return 1;
 		}
 		if(
@@ -515,6 +859,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="X") &&
 				(buttons[i+12].getText()=="X")
 				) {
+                        xWins1((i+4),(i+8),(i+12));
 			return 1;
 		}
                 }//Diaognal Check Top right to Bottom left done
@@ -527,6 +872,7 @@ public void enableButtons() {
 				(buttons[i+1].getText()=="O") &&
 				(buttons[i+2].getText()=="O")
 				) {
+                        oWins1((i+0),(i+1),(i+2));
 			return -1;
 		}
                 if(
@@ -534,6 +880,7 @@ public void enableButtons() {
 				(buttons[i+2].getText()=="O") &&
 				(buttons[i+3].getText()=="O")
 				) {
+                        oWins1((i+1),(i+2),(i+3));
 			return -1;
 		}
 		if(
@@ -541,6 +888,7 @@ public void enableButtons() {
 				(buttons[i+3].getText()=="O") &&
 				(buttons[i+4].getText()=="O")
 				) {
+                        oWins1((i+2),(i+3),(i+4));
 			return -1;
 		}
                 }//Horizontal Check done
@@ -551,13 +899,15 @@ public void enableButtons() {
 				(buttons[i+5].getText()=="O") &&
 				(buttons[i+10].getText()=="O")
 				) {
+                        oWins1((i+0),(i+5),(i+10));
 			return -1;
 		} 
                   if(
-				(buttons[i+0].getText()=="O") &&
 				(buttons[i+5].getText()=="O") &&
-				(buttons[i+10].getText()=="O")
+				(buttons[i+10].getText()=="O") &&
+				(buttons[i+15].getText()=="O")
 				) {
+                        oWins1((i+5),(i+10),(i+15));
 			return -1;
 		} 
                   if(
@@ -565,6 +915,7 @@ public void enableButtons() {
 				(buttons[i+15].getText()=="O") &&
 				(buttons[i+20].getText()=="O")
 				) {
+                        oWins1((i+10),(i+15),(i+20));
 			return -1;
 		}
                 }//Vertical Check done
@@ -575,6 +926,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="O") &&
 				(buttons[i+12].getText()=="O")
 				) {
+                        oWins1((i+0),(i+6),(i+12));
 			return -1;
 		}
                 if(
@@ -582,6 +934,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="O") &&
 				(buttons[i+13].getText()=="O")
 				) {
+                        oWins1((i+1),(i+7),(i+13));
 			return -1;
 		}
 		if(
@@ -589,6 +942,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="O") &&
 				(buttons[i+14].getText()=="O")
 				) {
+                        oWins1((i+2),(i+8),(i+14));
 			return -1;
 		}
                 }//Diaognal Check Top left to Bottom right done
@@ -599,6 +953,7 @@ public void enableButtons() {
 				(buttons[i+6].getText()=="O") &&
 				(buttons[i+10].getText()=="O")
 				) {
+                        oWins1((i+2),(i+6),(i+10));
 			return -1;
 		}
                 if(
@@ -606,6 +961,7 @@ public void enableButtons() {
 				(buttons[i+7].getText()=="O") &&
 				(buttons[i+11].getText()=="O")
 				) {
+                        oWins1((i+3),(i+7),(i+11));
 			return -1;
 		}
 		if(
@@ -613,6 +969,7 @@ public void enableButtons() {
 				(buttons[i+8].getText()=="O") &&
 				(buttons[i+12].getText()=="O")
 				) {
+                        oWins1((i+4),(i+8),(i+12));
 			return -1;
 		}
                 }//Diaognal Check Top right to Bottom left done
@@ -633,9 +990,28 @@ public void enableButtons() {
 		}
 }
         
+ public void xWins1(int a,int b,int c) {
+		buttons[a].setBackground(Color.GREEN);
+		buttons[b].setBackground(Color.GREEN);
+		buttons[c].setBackground(Color.GREEN);
+		
+		
+	}
+	public void oWins1(int a,int b,int c) {
+		buttons[a].setBackground(Color.GREEN);
+		buttons[b].setBackground(Color.GREEN);
+		buttons[c].setBackground(Color.GREEN);
+		
+		
+	}       
+        
+        
+        
+        
         public static void main(String[] args) {
        
            TicTacToe3 ttt3 = new TicTacToe3();
+           ttt3.PVE();
            
     }
         
