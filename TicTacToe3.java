@@ -361,7 +361,7 @@ private static void displayGameIntroduction() {
 
     int result = checkWin();
     if (result != 0) {
-        return result; // Reverse the sign for AI wins
+        return result; 
     }
 
     if (isMaximizing) {
@@ -398,17 +398,17 @@ private static void displayGameIntroduction() {
         return bestscore ;
 }
 } 
-//public void disableButtons() {
-//    for (int i = 0; i < 3; i++) {
-//        modeButtons[i].setEnabled(false);
-//    }
-//}
-//
-//public void enableButtons() {
-//    for (int i = 0; i < 3; i++) {
-//        modeButtons[i].setEnabled(true);
-//    }
-//}
+public void disableButtons() {
+    for (int i = 0; i < 3; i++) {
+        modeButtons[i].setEnabled(false);
+    }
+}
+
+public void enableButtons() {
+    for (int i = 0; i < 3; i++) {
+        modeButtons[i].setEnabled(true);
+    }
+}
 
 
  public void resetGame() {
